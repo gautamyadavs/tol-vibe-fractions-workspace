@@ -63,19 +63,50 @@ Segmented into **3 bite-sized, single-viewport steps** inside Rue’s room (`ass
 
 ---
 
+## Data Instrumentation & Supabase Telemetry Spec (Tool Task 6 Exemplar)
+
+This repository includes CMU 05-840’s canonical **PSLC DataShop-aligned interaction telemetry engine** (`tol-telemetry.js`, `tol-telemetry.css`, and `setup_telemetry.sql`), streaming `context_message`, `tool_message` (**Selection–Action–Input / SAI**), and `tutor_message` rows directly from static GitHub Pages to Supabase Free Tier (or 1-click local CSV/JSON export).
+
+- **Mayer Coherence Preserved**: The Live Telemetry Inspector is **closed by default** and triggered via a discreet **`Telemetry`** pill mounted right beside **`⚙️ LXD & Mayer Notes`** in the bottom-right instructor dock (`?telemetry=1` auto-opens it for grading/demos), preserving the zero-scroll `1440×900` learner workspace.
+
+### 1. KC–Step–SAI Mapping Table
+
+| Stage | `problem_id` | `step_id` | `selection` | `action` | `input` Format | `kc_id` | Example `feedback_or_bug_tag` |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **L1 Cookie Worked Example** | `l1_cookies_3_div_4` | `step_1_worked_example_cookies` | *(context)* | *(context)* | `{"wholes":3,"sharers":4,"is_proper_contrast":true}` | — | — |
+| **L2 · Step 2.1 Setup** (`10 ÷ 7`) | `rue_chores_10_div_7` | `step_2_1_setup_division` | `l2_step1_setup_choice` | `select_division_setup` | `'10*7'` \| `'10+7'` \| `'10/1'` \| `'10/7'` | `KC_transfer_symbolic_equal_sharing` | `bug_unit_omission_week_vs_days`, `correct_division_unit_setup` |
+| **L2 · Step 2.2 Hints** (`10 ÷ 7`) | `rue_chores_10_div_7` | `step_2_2_equal_sharing_workspace` | `workspace_hint_btn` | `request_hint` | `'hint_level_1'` \| `'hint_level_2'` | `KC_equal_sharing_improper_fraction` | `scaffold_graduated_hint_L1`, `scaffold_graduated_hint_L2` |
+| **L2 · Step 2.2 Check** (`10 ÷ 7`) | `rue_chores_10_div_7` | `step_2_2_equal_sharing_workspace` | `equal_sharing_workspace` | `submit_composite_fraction` | `'bars:10/7\|sym:10/14'` → `'bars:10/7\|sym:10/7'` | `KC_equal_sharing_improper_fraction` | `bug_counted_total_pieces_as_denominator`, `bug_inverted_sharers_and_wholes`, `bug_visual_bar_symbol_mismatch`, `correct_linked_representation` |
+| **L2 · Step 2.3 Mixed** (`1 3/7`) | `rue_chores_10_div_7` | `step_2_3_mixed_decomposition` | `l2_step3_mixed_decomposition` | `submit_mixed_and_justification` | `'mixed:1_3/7\|just:correct'` | `KC_decompose_whole_and_unit_fractions` / `KC_compare_fraction_to_one` | `bug_mixed_denominator_used_dividend`, `correct_mixed_number_decomposition` |
+| **L3 · Muffins** (`13 ÷ 5`) | `studio_muffins_13_div_5` | `step_3_1_equal_sharing_workspace` | `equal_sharing_workspace` / `workspace_hint_btn` | `submit_composite_fraction` / `request_hint` | `'bars:13/5\|sym:13/5\|mag:gt1\|mix:2_3/5'` | `KC_equal_sharing_improper_fraction` (+ `KC_compare_fraction_to_one` / `KC_decompose_whole_and_unit_fractions`) | `bug_counted_total_pieces_as_denominator`, `correct_linked_representation` |
+| **L3 · Paint** (`3 ÷ 5 < 1`) | `studio_paint_3_div_5` | `step_3_2_equal_sharing_workspace` | `equal_sharing_workspace` / `workspace_hint_btn` | `submit_composite_fraction` / `request_hint` | `'bars:3/5\|sym:3/5\|mag:lt1'` | `KC_proper_fraction_contrast` (+ `KC_compare_fraction_to_one`) | `bug_overgeneralized_improper_gt1_on_proper`, `correct_proper_fraction_contrast` |
+| **L3 · Granola** (`7 ÷ 4`) | `studio_granola_7_div_4` | `step_3_3_equal_sharing_workspace` | `equal_sharing_workspace` / `workspace_hint_btn` | `submit_composite_fraction` / `request_hint` | `'bars:7/4\|sym:7/4\|mag:gt1\|mix:1_3/4'` | `KC_transfer_symbolic_equal_sharing` (+ `KC_compare_fraction_to_one` / `KC_decompose_whole_and_unit_fractions`) | `bug_counted_total_pieces_as_denominator`, `correct_linked_representation` |
+
+### 2. Manipulative Commit Boundary & Graduated Hint Rules
+- **Manipulative Commit Boundary**: Partitioning fraction bars (`−` / `+` green cuts), toggling shaded blue pieces, dragging the SVG number line or slider, clicking `⇄ Fill boxes from my model`, flipping vocabulary cards, playing MP3 voiceovers, and typing digits **never** emit `INCORRECT` transactions. Learners can freely explore representations before clicking `Check`.
+- **Graduated Hints Do Not Penalize Attempts**: Clicking **`💡 Hint`** logs `outcome: 'HINT'` with `hint_level: 1 | 2` and `attempt_num: null`. Requesting hints between `Attempt #1 (INCORRECT)` and a corrected submission logs the next submission cleanly as `Attempt #2 (CORRECT)`.
+
+### 3. 3-Step Cloud Telemetry Setup (`setup_telemetry.sql` + GitHub Pages)
+1. **Run `setup_telemetry.sql` in Supabase**: Create a free Supabase project, open **SQL Editor**, paste [`setup_telemetry.sql`](setup_telemetry.sql), and click **Run** to create `public.interaction_logs` with `INSERT`-only Row-Level Security (`anon` can insert telemetry rows; only the project owner can view/export).
+2. **Connect Live Sink or Use Local CSV**: Open the GitHub Pages URL, click **`Telemetry`** (bottom-right), expand **Supabase Cloud Sink**, paste your Project URL + publishable/anon key, and click **Connect & Sync**—or click **Export CSV** / **Export JSON** anytime with zero cloud setup.
+3. **Collect Peer Logs**: Share URLs with `?peer=p01` query parameters (automatically sanitized so no PII is stored) and export the resulting transaction table from Supabase **Table Editor** for learning-curve analysis.
+
+---
+
 ## 4. Running Locally & Verification
 
 No build step or package installation is required:
 
 ```bash
 # Serve locally over HTTP
-python3 -m http.server 8000
-# Open http://localhost:8000
+python3 -m http.server 8822
+# Open http://localhost:8822
 
 # Validate JavaScript syntax
-node --check app.js
+node --check app.js && node --check tol-telemetry.js
 ```
 
 ### GitHub Pages Deployment
 1. Push `main` to `https://github.com/gautamyadavs/tol-vibe-fractions-workspace`.
 2. Ensure **Settings → Pages** is configured to deploy from `main` / `/ (root)`. `.nojekyll` serves all static HTML/CSS/JS and `assets/` directly.
+

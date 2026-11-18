@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Merriweather:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="tol-telemetry.css">
 </head>
 <body>
   <!-- Mobile Responsive Header -->
@@ -675,10 +676,12 @@
     </section>
   </main>
 
-  <!-- Discreet Instructor / LXD & Mayer Notes Toggle & Slide-Over Drawer -->
-  <button type="button" class="lxd-fab-btn" id="lxd-drawer-toggle" aria-pressed="false" aria-controls="lxd-drawer">
-    ⚙️ LXD &amp; Mayer Notes
-  </button>
+  <!-- Discreet Instructor / Telemetry & LXD Controls Dock + Slide-Over Drawer -->
+  <div class="instructor-controls-dock" id="instructor-controls-dock" role="region" aria-label="Telemetry and LXD Controls">
+    <button type="button" class="lxd-fab-btn" id="lxd-drawer-toggle" aria-pressed="false" aria-controls="lxd-drawer">
+      ⚙️ LXD &amp; Mayer Notes
+    </button>
+  </div>
 
   <div class="lxd-drawer-backdrop" id="lxd-drawer-backdrop"></div>
 
@@ -744,6 +747,7 @@
     </div>
   </aside>
 
+  <script src="tol-telemetry.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

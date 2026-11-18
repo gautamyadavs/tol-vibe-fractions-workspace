@@ -1714,11 +1714,31 @@ a:focus-visible {
    8. Discreet LXD & Mayer Notes Slide-Over Drawer (Zero Learner Clutter!)
    ========================================================================== */
 
-.lxd-fab-btn {
+.instructor-controls-dock {
   position: fixed;
   right: 16px;
   bottom: 14px;
   z-index: 45;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.instructor-controls-dock .tol-tel-trigger {
+  padding: 6px 12px;
+  background: rgba(255, 255, 255, 0.94);
+  border-color: var(--border-medium);
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+}
+
+.instructor-controls-dock .tol-tel-trigger:hover {
+  background: #FFFFFF;
+  border-color: var(--rise-navy);
+}
+
+.lxd-fab-btn {
   display: inline-flex;
   align-items: center;
   gap: 6px;

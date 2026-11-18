@@ -70,5 +70,39 @@ All diagnostics run 100% client-side with zero external APIs (`diagnoseLesson2St
 ---
 
 ## 4. Technical & Verification Guardrails
-- **Stack**: Pure Vanilla HTML5 (`index.html`), Vanilla CSS (`styles.css`), Vanilla ES6+ JS (`app.js`), `.nojekyll`, and authentic prepared media in `assets/`. Zero npm runtime dependencies, zero build step, zero API keys.
-- **Verification**: Always run `node --check app.js` and verify in headless `/usr/bin/chromium` at `1440×900` (asserting `scrollHeight <= 900` across Lesson 2 & Lesson 3 interactive states, zero console errors, zero broken images, and zero horizontal overflow on desktop and `390px` mobile).
+- **Stack**: Pure Vanilla HTML5 (`index.html`), Vanilla CSS (`styles.css`, `tol-telemetry.css`), Vanilla ES6+ JS (`app.js`, `tol-telemetry.js`), `setup_telemetry.sql`, `.nojekyll`, and authentic prepared media in `assets/`. Zero npm runtime dependencies, zero build step, zero hardcoded secret keys.
+- **Verification**: Always run `node --check app.js && node --check tol-telemetry.js` and verify in headless `/usr/bin/chromium` at `1440×900` (asserting `scrollHeight <= 900` across Lesson 2 & Lesson 3 interactive states, zero console errors, zero broken images, and zero horizontal overflow on desktop and `390px` mobile).
+
+---
+
+## Data Instrumentation & Supabase Telemetry Spec (Tool Task 6 Exemplar)
+
+This workspace implements CMU 05-840’s canonical **PSLC DataShop-aligned 3-message interaction telemetry** (`tol-telemetry.js` + `tol-telemetry.css` + `setup_telemetry.sql`) while keeping the student viewport 100% Mayer-clean (the closed-by-default **`Telemetry`** pill mounts inside `#instructor-controls-dock` directly beside **`⚙️ LXD & Mayer Notes`**).
+
+### 1. KC–Step–SAI & Diagnostic Bug-Tag Mapping Table
+
+| Lesson / Stage | `problem_id` | `step_id` | `selection` | `action` | `input` Format | `kc_id` | Representative `feedback_or_bug_tag` Values |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **L1 Worked Example** (`3 ÷ 4`) | `l1_cookies_3_div_4` | `step_1_worked_example_cookies` | *(context only)* | *(context only)* | `context_json` (`wholes:3, sharers:4, is_proper_contrast:true`) | — | — |
+| **L2 · Step 2.1** (`10 hrs ÷ 7 days` Setup) | `rue_chores_10_div_7` | `step_2_1_setup_division` | `l2_step1_setup_choice` | `select_division_setup` | `'10*7'` \| `'10+7'` \| `'10/1'` \| `'10/7'` | `KC_transfer_symbolic_equal_sharing` | `bug_operation_multiplication_error`, `bug_operation_addition_error`, `bug_unit_omission_week_vs_days`, `correct_division_unit_setup` |
+| **L2 · Step 2.2** (`10 ÷ 7` Graduated Hints) | `rue_chores_10_div_7` | `step_2_2_equal_sharing_workspace` | `workspace_hint_btn` | `request_hint` | `'hint_level_1'` \| `'hint_level_2'` | `KC_equal_sharing_improper_fraction` | `scaffold_graduated_hint_L1`, `scaffold_graduated_hint_L2` |
+| **L2 · Step 2.2** (`10 ÷ 7` Model & Fraction Check) | `rue_chores_10_div_7` | `step_2_2_equal_sharing_workspace` | `equal_sharing_workspace` | `submit_composite_fraction` | `'bars:<shaded>/<denom>\|sym:<num>/<den>'` (e.g. `bars:10/7\|sym:10/14`) | `KC_equal_sharing_improper_fraction` | `bug_counted_total_pieces_as_denominator`, `bug_inverted_sharers_and_wholes`, `bug_unit_omission_week_vs_days`, `bug_single_whole_unit_fraction_only`, `bug_remainder_only_omitted_whole`, `bug_visual_bar_symbol_mismatch`, `correct_linked_representation` |
+| **L2 · Step 2.3** (`10/7 = 1 3/7` Mixed & Explain) | `rue_chores_10_div_7` | `step_2_3_mixed_decomposition` | `l2_step3_mixed_decomposition` | `submit_mixed_and_justification` | `'mixed:<W>_<N>/<D>\|just:<choice>'` | `KC_decompose_whole_and_unit_fractions` *(or `KC_compare_fraction_to_one` on `<1` distractor)* | `bug_mixed_denominator_used_dividend`, `bug_mixed_whole_zero_omitted`, `bug_mixed_remainder_still_improper`, `bug_justification_remainder_unit_tenths`, `bug_justification_magnitude_less_than_one`, `correct_mixed_number_decomposition` |
+| **L3 · Challenge 1** (`13 ÷ 5` Muffins) | `studio_muffins_13_div_5` | `step_3_1_equal_sharing_workspace` | `equal_sharing_workspace` / `workspace_hint_btn` | `submit_composite_fraction` / `request_hint` | `'bars:<S>/<P>\|sym:<N>/<D>\|mag:<lt1\|gt1>\|mix:<W>_<N>/<D>'` | `KC_equal_sharing_improper_fraction` *(+ `KC_compare_fraction_to_one` / `KC_decompose_whole_and_unit_fractions`)* | `bug_counted_total_pieces_as_denominator`, `bug_inverted_sharers_and_wholes`, `bug_classified_improper_as_less_than_one`, `bug_mixed_denominator_used_dividend`, `correct_linked_representation` |
+| **L3 · Challenge 2** (`3 ÷ 5 < 1` Paint Contrast) | `studio_paint_3_div_5` | `step_3_2_equal_sharing_workspace` | `equal_sharing_workspace` / `workspace_hint_btn` | `submit_composite_fraction` / `request_hint` | `'bars:<S>/<P>\|sym:<N>/<D>\|mag:<lt1\|gt1>'` | `KC_proper_fraction_contrast` *(+ `KC_compare_fraction_to_one` on `mag` error)* | `bug_overgeneralized_improper_gt1_on_proper`, `bug_counted_total_pieces_as_denominator`, `bug_inverted_sharers_and_wholes`, `correct_proper_fraction_contrast` |
+| **L3 · Challenge 3** (`7 ÷ 4` Granola Transfer) | `studio_granola_7_div_4` | `step_3_3_equal_sharing_workspace` | `equal_sharing_workspace` / `workspace_hint_btn` | `submit_composite_fraction` / `request_hint` | `'bars:<S>/<P>\|sym:<N>/<D>\|mag:<lt1\|gt1>\|mix:<W>_<N>/<D>'` | `KC_transfer_symbolic_equal_sharing` *(+ `KC_compare_fraction_to_one` / `KC_decompose_whole_and_unit_fractions`)* | `bug_counted_total_pieces_as_denominator`, `bug_inverted_sharers_and_wholes`, `bug_visual_bar_symbol_mismatch`, `correct_linked_representation` |
+
+### 2. Manipulative Commit Boundary Rules
+- **Zero Premature Penalties**: Exploratory manipulative actions—adjusting Green equal-part steppers, adjusting Blue shaded-piece steppers, clicking individual bar slices, dragging the SVG number-line handle or range slider, toggling `Both Linked / Fraction Bars / Number Line`, clicking `⇄ Fill boxes from my model`, flipping Lesson 1 vocabulary cards, playing MP3 voiceovers, or typing digits—**MUST NEVER** fire `TOLTelemetry.logTransaction`.
+- **Explicit Commit Triggers Only**: Paired `tool_message` (SAI) + `tutor_message` rows are emitted strictly on explicit pedagogical commits (`Check My Model & Fraction`, `Check Mixed Number & Explanation`, `Check Challenge`, Step 2.1 operation-card commit, and `💡 Hint`).
+- **Context Lifecycle**: `TOLTelemetry.logContext` fires automatically on initial load, lesson/step/challenge navigation, and `↺ Reset` clicks (`reset: true`).
+
+### 3. Graduated Hint Logging Rules
+- Clicking **`💡 Hint`** logs a transaction with `selection: 'workspace_hint_btn'`, `action: 'request_hint'`, `input: 'hint_level_1' | 'hint_level_2'`, `outcome: 'HINT'`, `isHint: true`, `hint_level: 1 | 2`, and `feedback_or_bug_tag: 'scaffold_graduated_hint_L1' | 'scaffold_graduated_hint_L2'`.
+- **`attempt_num` Preservation**: Hint transactions record `attempt_num: null` and **never** increment the `(problem_id, step_id)` attempt counter—so `Attempt #1 INCORRECT` → `Hint L1` → `Hint L2` → `Check` logs the subsequent check cleanly as **`Attempt #2`**.
+
+### 4. 3-Step Supabase Free Tier + GitHub Pages Setup
+1. **Provision RLS Table**: In a free [Supabase](https://supabase.com) project, open **SQL Editor**, paste `setup_telemetry.sql`, and click **Run**. This creates `public.interaction_logs` with an `INSERT`-only Row-Level Security policy for `anon` (`SELECT`/`UPDATE`/`DELETE` remain blocked so peers cannot read others’ logs).
+2. **Connect from GitHub Pages (or Export CSV Offline)**: Open the deployed GitHub Pages app, click the **`Telemetry`** pill in the bottom-right dock, expand **Supabase Cloud Sink**, and enter your Supabase Project URL + publishable/anon key (or click **Export CSV** / **Export JSON** anytime with zero backend required).
+3. **Run Peer User Testing**: Distribute URLs with opaque tester tags (e.g., `?peer=p01`, `?peer=p02`) and inspect or export PSLC DataShop-compatible rows from **Supabase Table Editor → `interaction_logs`**.
+

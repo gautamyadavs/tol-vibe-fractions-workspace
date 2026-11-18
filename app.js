@@ -209,6 +209,167 @@
   }
 
   /* ------------------------------------------------------------------------
+     2b. Canonical PSLC DataShop Telemetry Mapping (CMU 05-840)
+     ------------------------------------------------------------------------ */
+
+  const STUDIO_PROBLEM_IDS = [
+    'studio_muffins_13_div_5',
+    'studio_paint_3_div_5',
+    'studio_granola_7_div_4'
+  ];
+
+  const STUDIO_STEP_IDS = [
+    'step_3_1_equal_sharing_workspace',
+    'step_3_2_equal_sharing_workspace',
+    'step_3_3_equal_sharing_workspace'
+  ];
+
+  const DIAG_CODE_TO_TELEMETRY_TAG = {
+    OPERATION_MULTIPLICATION_ERROR: 'bug_operation_multiplication_error',
+    OPERATION_ADDITION_ERROR: 'bug_operation_addition_error',
+    UNIT_OMISSION_WEEK_VS_DAYS: 'bug_unit_omission_week_vs_days',
+    STEP_2_1_VERIFIED: 'correct_division_unit_setup',
+
+    EMPTY_SUBMISSION: 'bug_empty_submission',
+    INVALID_FRACTION_INPUT: 'bug_invalid_fraction_input',
+    DIVIDEND_DIVISOR_INVERSION: 'bug_inverted_sharers_and_wholes',
+    SINGLE_WHOLE_ONLY: 'bug_single_whole_unit_fraction_only',
+    PARTITIONED_BY_DIVIDEND: 'bug_partitioned_by_dividend_wholes',
+    REMAINDER_ONLY_AS_QUOTIENT: 'bug_remainder_only_omitted_whole',
+    COUNTED_TOTAL_PIECES_AS_DENOMINATOR: 'bug_counted_total_pieces_as_denominator',
+    VISUAL_WRONG_PARTITIONS: 'bug_wrong_bar_denominator_partitions',
+    VISUAL_WRONG_SHADED_COUNT: 'bug_wrong_shaded_numerator_pieces',
+    FRACTION_MISSING: 'bug_symbolic_fraction_missing',
+    VISUAL_SYMBOLIC_MISMATCH: 'bug_visual_bar_symbol_mismatch',
+    STEP_2_2_VERIFIED: 'correct_linked_representation',
+
+    MAGNITUDE_MISSING: 'bug_magnitude_comparison_missing',
+    MAGNITUDE_OVERGENERALIZED_GT1: 'bug_overgeneralized_improper_gt1_on_proper',
+    MAGNITUDE_INCORRECT_FOR_IMPROPER: 'bug_classified_improper_as_less_than_one',
+
+    MIXED_FIELDS_MISSING: 'bug_mixed_number_fields_missing',
+    MIXED_INVALID_NUMBERS: 'bug_mixed_number_invalid_input',
+    MIXED_WHOLE_ZERO: 'bug_mixed_whole_zero_omitted',
+    MIXED_DENOMINATOR_USED_DIVIDEND: 'bug_mixed_denominator_used_dividend',
+    MIXED_REMAINDER_STILL_IMPROPER: 'bug_mixed_remainder_still_improper',
+    MIXED_WHOLE_INCORRECT: 'bug_mixed_whole_count_incorrect',
+    MIXED_DENOMINATOR_INCORRECT: 'bug_mixed_denominator_incorrect',
+    MIXED_NUMERATOR_INCORRECT: 'bug_mixed_leftover_numerator_incorrect',
+    JUSTIFICATION_MISSING: 'bug_conceptual_justification_missing',
+    JUSTIFICATION_DISTRACTOR_REM10: 'bug_justification_remainder_unit_tenths',
+    JUSTIFICATION_DISTRACTOR_LT1: 'bug_justification_magnitude_less_than_one',
+    STEP_2_3_VERIFIED: 'correct_mixed_number_decomposition',
+    CHALLENGE_VERIFIED: 'correct_linked_representation'
+  };
+
+  let lastLoggedContextKey = '';
+
+  function emitActiveProblemContext(isReset) {
+    if (typeof window === 'undefined' || !window.TOLTelemetry) return;
+
+    const subKey =
+      state.activeLesson === 2
+        ? state.lesson2.activeStep
+        : state.activeLesson === 3
+        ? state.lesson3.activeChallengeIndex
+        : 0;
+    const contextKey = `${state.activeLesson}:${subKey}`;
+    if (!isReset && contextKey === lastLoggedContextKey) return;
+    lastLoggedContextKey = contextKey;
+
+    if (state.activeLesson === 1) {
+      window.TOLTelemetry.logContext({
+        problemId: 'l1_cookies_3_div_4',
+        stepId: 'step_1_worked_example_cookies',
+        context: {
+          lesson: 1,
+          title: 'Cookies Fair Share (3 ÷ 4)',
+          wholes: 3,
+          sharers: 4,
+          target_numerator: 3,
+          target_denominator: 4,
+          is_proper_contrast: true,
+          reset: Boolean(isReset)
+        }
+      });
+      return;
+    }
+
+    if (state.activeLesson === 2) {
+      const stepNum = state.lesson2.activeStep;
+      const stepIds = {
+        1: 'step_2_1_setup_division',
+        2: 'step_2_2_equal_sharing_workspace',
+        3: 'step_2_3_mixed_decomposition'
+      };
+      window.TOLTelemetry.logContext({
+        problemId: 'rue_chores_10_div_7',
+        stepId: stepIds[stepNum] || 'step_2_2_equal_sharing_workspace',
+        context: {
+          lesson: 2,
+          step: stepNum,
+          title: 'Help Rue Out: Weekly Chores (10 ÷ 7)',
+          wholes: LESSON2_PROBLEM.dividend,
+          sharers: LESSON2_PROBLEM.divisor,
+          max_whole_bars: LESSON2_PROBLEM.maxWholes,
+          target_numerator: LESSON2_PROBLEM.dividend,
+          target_denominator: LESSON2_PROBLEM.divisor,
+          target_mixed: '1 3/7',
+          is_proper_contrast: false,
+          reset: Boolean(isReset)
+        }
+      });
+      return;
+    }
+
+    if (state.activeLesson === 3) {
+      const idx = state.lesson3.activeChallengeIndex;
+      const cfg = STUDIO_CHALLENGES[idx];
+      const isProper = cfg.dividend < cfg.divisor;
+      window.TOLTelemetry.logContext({
+        problemId: STUDIO_PROBLEM_IDS[idx],
+        stepId: STUDIO_STEP_IDS[idx],
+        context: {
+          lesson: 3,
+          challenge_index: idx + 1,
+          title: cfg.title,
+          wholes: cfg.dividend,
+          sharers: cfg.divisor,
+          max_whole_bars: cfg.maxWholes,
+          target_numerator: cfg.dividend,
+          target_denominator: cfg.divisor,
+          target_mixed: isProper
+            ? null
+            : `${Math.floor(cfg.dividend / cfg.divisor)} ${cfg.dividend % cfg.divisor}/${cfg.divisor}`,
+          is_proper_contrast: isProper,
+          reset: Boolean(isReset)
+        }
+      });
+    }
+  }
+
+  function logTutorTransaction(opts) {
+    if (typeof window === 'undefined' || !window.TOLTelemetry) return;
+    window.TOLTelemetry.logTransaction(opts);
+  }
+
+  function resolveStudioChallengeKc(idx, cfg, diagCode) {
+    if (diagCode && diagCode.startsWith('MAGNITUDE_')) {
+      return 'KC_compare_fraction_to_one';
+    }
+    if (diagCode && diagCode.startsWith('MIXED_')) {
+      return 'KC_decompose_whole_and_unit_fractions';
+    }
+    if (cfg.dividend < cfg.divisor) {
+      return 'KC_proper_fraction_contrast';
+    }
+    if (idx === 2) {
+      return 'KC_transfer_symbolic_equal_sharing';
+    }
+    return 'KC_equal_sharing_improper_fraction';
+  }
+
+  /* ------------------------------------------------------------------------
      3. Deterministic Step-Level Misconception Diagnostic Functions
      ------------------------------------------------------------------------ */
 
@@ -321,6 +482,24 @@
         title: 'Don’t Forget the Complete 1-Hour Bar!',
         message:
           '<strong>3/7</strong> is only the leftover part past 1 hour. Include the <strong>full first hour (7/7)</strong> plus the leftover pieces in one day’s total share!'
+      };
+    }
+
+    // 6b. Classic Denominator Misconception: Counting total slices across ALL bars (e.g., 10/14 instead of 10/7, or 5/6 instead of 5/3)
+    if (
+      den === LESSON2_PROBLEM.maxWholes * b ||
+      (parts > 1 && den === LESSON2_PROBLEM.maxWholes * parts && num === shaded && shaded > 0)
+    ) {
+      return {
+        status: 'coaching',
+        code: 'COUNTED_TOTAL_PIECES_AS_DENOMINATOR',
+        ruePose: 'thinking',
+        highlight: 'green-cuts',
+        title: 'Check the Green Denominator: Parts in 1 Whole Hour Only!',
+        message:
+          parts === b
+            ? `You counted all <strong>${den}</strong> slices across both bars! Remember the <strong class="text-den-green">Green Denominator</strong> counts equal parts in <strong>1 single whole hour (7)</strong>, not both bars combined.`
+            : `Counting all <strong>${den}</strong> slices across both bars mixes up the unit! Cut <strong>1 single whole hour</strong> into <strong>7</strong> equal daily parts and use <strong>7</strong> as your green denominator.`
       };
     }
 
@@ -625,6 +804,24 @@
         highlight: 'blue-shares',
         title: 'Include the Complete Wholes Too!',
         message: `<strong>${targetRem}/${b}</strong> is only the leftover part! Make sure your model and fraction include all complete wholes plus the leftover pieces.`
+      };
+    }
+
+    // 5b. Classic Denominator Misconception: Counting total slices across ALL bars (e.g., 13/15, 3/10, 7/8)
+    if (
+      den === challenge.maxWholes * b ||
+      (parts > 1 && den === challenge.maxWholes * parts && num === shaded && shaded > 0)
+    ) {
+      return {
+        status: 'coaching',
+        code: 'COUNTED_TOTAL_PIECES_AS_DENOMINATOR',
+        ruePose: 'thinking',
+        highlight: 'green-cuts',
+        title: `Check the Green Denominator: Parts in 1 ${challenge.wholeLabel} Only!`,
+        message:
+          parts === b
+            ? `You counted all <strong>${den}</strong> slices across every bar! The <strong class="text-den-green">Green Denominator</strong> counts equal parts in <strong>1 single ${challenge.wholeLabel.toLowerCase()} (${b})</strong>, not all ${challenge.maxWholes} bars combined.`
+            : `Counting all <strong>${den}</strong> slices across every bar mixes up the unit! Cut <strong>1 single ${challenge.wholeLabel.toLowerCase()}</strong> into <strong>${b}</strong> equal parts and use <strong>${b}</strong> as your green denominator.`
       };
     }
 
@@ -1571,6 +1768,7 @@
       nextBtn.onclick = () => {
         state.lesson3.activeChallengeIndex = nextUnsolvedIdx;
         renderAll();
+        emitActiveProblemContext(false);
       };
     } else {
       nextWrap.hidden = true;
@@ -1650,6 +1848,7 @@
     closeMobileSidebar();
     window.scrollTo({ top: 0, behavior: 'instant' });
     renderAll();
+    emitActiveProblemContext(false);
   }
 
   function enterLesson2Step(stepNum) {
@@ -1673,6 +1872,7 @@
         '“Look at your model on the left—one day’s share goes <strong>past 1 whole hour</strong>! Write <code>10/7</code> as a <strong>Mixed Number</strong> and choose why it makes sense.”';
     }
     renderAll();
+    emitActiveProblemContext(false);
   }
 
   function bindEvents() {
@@ -1798,6 +1998,13 @@
       }
     };
 
+    const step1InputExpressions = {
+      mult: '10*7',
+      add: '10+7',
+      unit1: '10/1',
+      correct: '10/7'
+    };
+
     ['mult', 'add', 'unit1', 'correct'].forEach((choiceKey) => {
       document.getElementById(`l2-choice-${choiceKey}`).addEventListener('click', () => {
         const res = step1Responses[choiceKey];
@@ -1808,6 +2015,16 @@
           state.lesson2.step1Verified = true;
         }
         state.lastDiagnosticEvent = res.code;
+        logTutorTransaction({
+          problemId: 'rue_chores_10_div_7',
+          stepId: 'step_2_1_setup_division',
+          selection: 'l2_step1_setup_choice',
+          action: 'select_division_setup',
+          input: step1InputExpressions[choiceKey],
+          outcome: choiceKey === 'correct' ? 'CORRECT' : 'INCORRECT',
+          kcId: 'KC_transfer_symbolic_equal_sharing',
+          feedbackOrBugTag: DIAG_CODE_TO_TELEMETRY_TAG[res.code] || res.code.toLowerCase()
+        });
         renderDiagnosticBox(document.getElementById('l2-step1-diag'), res.diag);
         renderAll();
       });
@@ -1817,7 +2034,7 @@
       enterLesson2Step(2);
     });
 
-    // Lesson 2 Manipulative Controls
+    // Lesson 2 Manipulative Controls (Commit Boundary: ZERO premature transactions during manipulation)
     ['both', 'bars', 'line'].forEach((vm) => {
       document.getElementById(`l2-view-${vm}`).addEventListener('click', () => {
         state.lesson2.viewMode = vm;
@@ -1880,6 +2097,18 @@
       box.classList.remove('pulse-signal');
       void box.offsetWidth;
       box.classList.add('pulse-signal');
+      logTutorTransaction({
+        problemId: 'rue_chores_10_div_7',
+        stepId: 'step_2_2_equal_sharing_workspace',
+        selection: 'workspace_hint_btn',
+        action: 'request_hint',
+        input: 'hint_level_' + l2.hintLevel,
+        outcome: 'HINT',
+        isHint: true,
+        hintLevel: l2.hintLevel,
+        kcId: 'KC_equal_sharing_improper_fraction',
+        feedbackOrBugTag: 'scaffold_graduated_hint_L' + l2.hintLevel
+      });
       renderAll();
     });
 
@@ -1892,6 +2121,7 @@
       l2.hintLevel = 0;
       l2.visualHighlight = null;
       renderAll();
+      emitActiveProblemContext(true);
     });
 
     document.getElementById('l2-frac-num').addEventListener('input', (e) => {
@@ -1923,6 +2153,24 @@
         l2.step2Verified = true;
       }
       state.lastDiagnosticEvent = diag.code;
+      logTutorTransaction({
+        problemId: 'rue_chores_10_div_7',
+        stepId: 'step_2_2_equal_sharing_workspace',
+        selection: 'equal_sharing_workspace',
+        action: 'submit_composite_fraction',
+        input:
+          'bars:' +
+          l2.shadedParts +
+          '/' +
+          l2.partsPerWhole +
+          '|sym:' +
+          (l2.fracNum || '?') +
+          '/' +
+          (l2.fracDen || '?'),
+        outcome: diag.status === 'verified' ? 'CORRECT' : 'INCORRECT',
+        kcId: 'KC_equal_sharing_improper_fraction',
+        feedbackOrBugTag: DIAG_CODE_TO_TELEMETRY_TAG[diag.code] || diag.code.toLowerCase()
+      });
       renderAll();
     });
 
@@ -1966,6 +2214,27 @@
         l2.step3Verified = true;
       }
       state.lastDiagnosticEvent = diag.code;
+      logTutorTransaction({
+        problemId: 'rue_chores_10_div_7',
+        stepId: 'step_2_3_mixed_decomposition',
+        selection: 'l2_step3_mixed_decomposition',
+        action: 'submit_mixed_and_justification',
+        input:
+          'mixed:' +
+          (l2.mixWhole || '?') +
+          '_' +
+          (l2.mixNum || '?') +
+          '/' +
+          (l2.mixDen || '?') +
+          '|just:' +
+          (l2.justification || '?'),
+        outcome: diag.status === 'verified' ? 'CORRECT' : 'INCORRECT',
+        kcId:
+          diag.code === 'JUSTIFICATION_DISTRACTOR_LT1'
+            ? 'KC_compare_fraction_to_one'
+            : 'KC_decompose_whole_and_unit_fractions',
+        feedbackOrBugTag: DIAG_CODE_TO_TELEMETRY_TAG[diag.code] || diag.code.toLowerCase()
+      });
       renderAll();
     });
 
@@ -1978,6 +2247,7 @@
       document.getElementById(`l3-chal-pill-${i}`).addEventListener('click', () => {
         state.lesson3.activeChallengeIndex = i;
         renderAll();
+        emitActiveProblemContext(false);
       });
     });
 
@@ -2041,7 +2311,9 @@
     });
 
     document.getElementById('l3-hint-btn').addEventListener('click', () => {
-      const cs = state.lesson3.challenges[state.lesson3.activeChallengeIndex];
+      const idx = state.lesson3.activeChallengeIndex;
+      const cfg = STUDIO_CHALLENGES[idx];
+      const cs = state.lesson3.challenges[idx];
       cs.hintLevel = cs.hintLevel >= 2 ? 1 : cs.hintLevel + 1;
       cs.visualHighlight = cs.hintLevel === 1 ? 'green-cuts' : 'blue-shares';
       const box = document.getElementById(
@@ -2050,6 +2322,18 @@
       box.classList.remove('pulse-signal');
       void box.offsetWidth;
       box.classList.add('pulse-signal');
+      logTutorTransaction({
+        problemId: STUDIO_PROBLEM_IDS[idx],
+        stepId: STUDIO_STEP_IDS[idx],
+        selection: 'workspace_hint_btn',
+        action: 'request_hint',
+        input: 'hint_level_' + cs.hintLevel,
+        outcome: 'HINT',
+        isHint: true,
+        hintLevel: cs.hintLevel,
+        kcId: resolveStudioChallengeKc(idx, cfg, null),
+        feedbackOrBugTag: 'scaffold_graduated_hint_L' + cs.hintLevel
+      });
       renderAll();
     });
 
@@ -2070,6 +2354,7 @@
       cs.ruePose = 'talking';
       cs.rueSpeechHtml = cfg.promptHtml;
       renderAll();
+      emitActiveProblemContext(true);
     });
 
     document.getElementById('l3-frac-num').addEventListener('input', (e) => {
@@ -2122,6 +2407,37 @@
         cs.verified = true;
       }
       state.lastDiagnosticEvent = diag.code;
+
+      const isProper = cfg.dividend < cfg.divisor;
+      const compositeInput =
+        'bars:' +
+        cs.shadedParts +
+        '/' +
+        cs.partsPerWhole +
+        '|sym:' +
+        (cs.fracNum || '?') +
+        '/' +
+        (cs.fracDen || '?') +
+        (cs.magnitude ? '|mag:' + cs.magnitude : '') +
+        (cs.magnitude === 'gt1'
+          ? '|mix:' + (cs.mixWhole || '?') + '_' + (cs.mixNum || '?') + '/' + (cs.mixDen || '?')
+          : '');
+
+      const bugOrSuccessTag =
+        diag.code === 'CHALLENGE_VERIFIED' && isProper
+          ? 'correct_proper_fraction_contrast'
+          : DIAG_CODE_TO_TELEMETRY_TAG[diag.code] || diag.code.toLowerCase();
+
+      logTutorTransaction({
+        problemId: STUDIO_PROBLEM_IDS[idx],
+        stepId: STUDIO_STEP_IDS[idx],
+        selection: 'equal_sharing_workspace',
+        action: 'submit_composite_fraction',
+        input: compositeInput,
+        outcome: diag.status === 'verified' ? 'CORRECT' : 'INCORRECT',
+        kcId: resolveStudioChallengeKc(idx, cfg, diag.code),
+        feedbackOrBugTag: bugOrSuccessTag
+      });
       renderAll();
     });
 
@@ -2170,6 +2486,7 @@
         }
         state.lxdDrawerOpen = false;
         renderAll();
+        emitActiveProblemContext(false);
       });
     });
 
@@ -2180,7 +2497,9 @@
         syncAudioButtonsUI();
       }
       state = createInitialState();
+      lastLoggedContextKey = '';
       renderAll();
+      emitActiveProblemContext(true);
     });
   }
 
@@ -2197,8 +2516,27 @@
 
   if (typeof document !== 'undefined') {
     document.addEventListener('DOMContentLoaded', () => {
+      if (window.TOLTelemetry) {
+        window.TOLTelemetry.init({
+          toolName: 'tol-vibe-fractions-workspace',
+          mountInto: '#instructor-controls-dock',
+          insertBeforeSelector: '#lxd-drawer-toggle',
+          onNewPeerSession: () => {
+            if (voiceAudio) {
+              voiceAudio.pause();
+              activeAudioBtnId = null;
+              syncAudioButtonsUI();
+            }
+            state = createInitialState();
+            lastLoggedContextKey = '';
+            renderAll();
+            emitActiveProblemContext(false);
+          }
+        });
+      }
       bindEvents();
       renderAll();
+      emitActiveProblemContext(false);
     });
   }
 })();

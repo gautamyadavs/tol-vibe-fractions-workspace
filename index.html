@@ -3,525 +3,746 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Understanding Fractions as Division in Real Life | Interactive Manipulative Studio (CMU 05-840)</title>
-  <meta name="description" content="Interactive dual-representation fraction-as-division workspace combining equal-sharing fraction bars, a partitioned 0–4 number line, and step-level misconception diagnostics. Built for CMU 05-840 Tool Task 3 Demo #2.">
+  <title>Understanding Fractions as Division in Real Life | Interactive Course</title>
+  <meta name="description" content="Learn how fractions represent fair-sharing division in real life with Rue! Interactive fraction bars, number lines, voiceovers, and step-by-step coaching based on Corina Luca Focsan's course.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Merriweather:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <a id="skip-to-workspace-link" class="skip-link" href="#main-studio">Skip to interactive workspace</a>
-
-  <header class="site-header">
-    <div class="header-inner">
-      <div class="header-identity">
-        <span class="course-tag">CMU 05-840 · S27 · Demo #2</span>
-        <span class="track-label">Track B: Interactive Domain Manipulative &amp; Step-Level Diagnostics</span>
-      </div>
-      <div class="header-controls">
-        <a
-          id="header-baseline-link"
-          class="baseline-link"
-          href="https://corinalucafocsan.github.io/fraction-course/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >Baseline 2026 Rise 360 Course ↗</a>
-        <button
-          id="toggle-lxd-view"
-          class="lxd-toggle-btn"
-          type="button"
-          aria-pressed="false"
-        >
-          <span>Learning Engineer View</span>
-          <span class="lxd-switch-track" aria-hidden="true">
-            <span class="lxd-switch-thumb"></span>
-          </span>
-        </button>
-      </div>
-    </div>
+  <!-- Mobile Responsive Header -->
+  <header class="mobile-topbar" id="mobile-topbar">
+    <button type="button" class="mobile-menu-btn" id="mobile-menu-btn" aria-expanded="false" aria-controls="course-sidebar">
+      ☰ Lessons
+    </button>
+    <span class="mobile-course-title">Fractions as Division in Real Life</span>
+    <span class="mobile-progress-pill" id="mobile-progress-pill">0%</span>
   </header>
 
-  <main id="main-studio" class="studio-main">
-    <!-- Editorial Masthead & Carried-Over Learning Objectives -->
-    <section class="studio-masthead" aria-labelledby="course-main-heading">
-      <div class="masthead-top">
-        <div class="masthead-title-group">
-          <h1 id="course-main-heading">Understanding Fractions as Division in Real Life</h1>
-          <p class="masthead-subtitle">
-            Help Rue solve real-world equal-sharing problems by partitioning wholes, linking bar diagrams with a number line, and justifying why <code>a &divide; b = a/b</code>. Adapted and extended from Corina Luca Focsan&rsquo;s 2026 exemplar.
-          </p>
-        </div>
-        <button
-          id="toggle-lo-btn"
-          class="lo-toggle-btn"
-          type="button"
-          aria-expanded="true"
-          aria-controls="lo-objectives-drawer"
-        >Hide Learning Objectives (LO1&ndash;LO4)</button>
+  <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+
+  <!-- Authentic Articulate Rise 360 Left Course Sidebar -->
+  <aside class="rise-sidebar" id="course-sidebar" aria-label="Course Navigation">
+    <div class="sidebar-cover">
+      <div class="sidebar-author">
+        <img src="assets/author-avatar.png" alt="Corina Luca avatar" class="author-avatar" width="26" height="26">
+        <span class="author-name">Corina Luca</span>
       </div>
-
-      <div id="lo-objectives-drawer" class="lo-drawer">
-        <div class="lo-item">
-          <strong>LO1 · Visual Modeling</strong>
-          <div>Build and use fraction diagrams and number lines to solve real-world equal-sharing division problems (<code>a &divide; b = a/b</code>).</div>
+      <h1 class="course-main-title">Understanding Fractions as Division in Real Life</h1>
+      <div class="course-progress-wrap">
+        <div class="course-progress-track" aria-hidden="true">
+          <div class="course-progress-fill" id="course-progress-fill"></div>
         </div>
-        <div class="lo-item">
-          <strong>LO2 · Quotient Magnitude</strong>
-          <div>Identify when a sharing quotient is less than 1 whole (proper fraction) versus greater than 1 whole (improper fraction / mixed number).</div>
-        </div>
-        <div class="lo-item">
-          <strong>LO3 · Mixed-Number Grouping</strong>
-          <div>Transform improper fractions into mixed numbers by grouping whole units and interpreting leftover fractional parts.</div>
-        </div>
-        <div class="lo-item">
-          <strong>LO4 · Contextual Justification</strong>
-          <div>Explain and justify fraction-as-division reasoning in real-world unit contexts.</div>
-        </div>
+        <div class="course-progress-label" id="course-progress-label">0% COMPLETE</div>
       </div>
-    </section>
-
-    <!-- LXD Callout A: Overcoming Rise 360's Authoring Limitation -->
-    <aside id="lxd-callout-rationale" class="lxd-callout" aria-label="Learning Engineering Note on Rise 360 Authoring Limitation">
-      <div class="lxd-callout-header">
-        <span class="lxd-badge">LXD Note 01 · Overcoming Rise 360&rsquo;s Authoring Ceiling</span>
-        <span class="lxd-badge">Track B Rationale</span>
-      </div>
-      <h3>Why Rebuild Static Rise 360 Blocks as a Parameterized Manipulative?</h3>
-      <p>
-        In Corina Luca Focsan&rsquo;s 2026 Articulate Rise 360 course, learners viewed static fraction-bar illustrations and answered fixed multiple-choice or fill-in-the-blank blocks. As documented in her design reflection, Rise 360 provides no native block for learners to <em>construct</em> partitions dynamically, coordinate discrete bars with a continuous number line, or receive feedback that inspects their visual model alongside symbolic notation.
-      </p>
-      <p>
-        This Track B workspace replaces passive visuals with an interactive 4-scenario progression (including <strong>Problem 3&rsquo;s <code>&lt; 1</code> conceptual contrast</strong> so learners cannot mechanically apply mixed-number conversion without evaluating magnitude).
-      </p>
-    </aside>
-
-    <!-- 4-Problem Scenario Progression -->
-    <nav id="problem-progression-nav" class="problem-nav" aria-label="Equal-sharing problem progression">
-      <!-- Populated and updated by app.js with deterministic button IDs problem-tab-1..4 -->
-    </nav>
-
-    <!-- Active Problem Context Card -->
-    <section id="problem-context-card" class="problem-card" aria-labelledby="problem-title-heading">
-      <div class="problem-story-wrap">
-        <span id="problem-kicker" class="problem-kicker">Problem 1 of 4 · Signature Scenario</span>
-        <h2 id="problem-title-heading">Rue&rsquo;s Weekly Chore Schedule</h2>
-        <p id="problem-narrative" class="problem-narrative"></p>
-        <p id="problem-question" class="problem-question"></p>
-      </div>
-      <div class="problem-unit-box" aria-label="Scenario unit reference">
-        <div class="problem-unit-box-title">Unit Context Check</div>
-        <div class="unit-kv">
-          <span>Quantity Shared</span>
-          <strong id="unit-shared-label">Hours of chores</strong>
-        </div>
-        <div class="unit-kv">
-          <span>1 Whole Bar / Interval</span>
-          <strong id="unit-whole-label">1 hour</strong>
-        </div>
-        <div class="unit-kv">
-          <span>Target Rate Unit</span>
-          <strong id="unit-target-label">Hours per day</strong>
-        </div>
-      </div>
-    </section>
-
-    <!-- Step 1: Dual-Representation Manipulative Workspace -->
-    <section class="workspace-card" aria-labelledby="workspace-heading">
-      <div class="section-header">
-        <div class="section-title-group">
-          <span class="step-eyebrow">Step 1 · LO1 &amp; LO3 Visual Construction</span>
-          <h2 id="workspace-heading">Build the Equal-Sharing Model</h2>
-        </div>
-
-        <div class="view-switcher" role="group" aria-label="Representation view mode">
-          <button id="view-btn-linked" class="view-mode-btn" type="button" aria-pressed="true">
-            Linked Side-by-Side
-          </button>
-          <button id="view-btn-bars" class="view-mode-btn" type="button" aria-pressed="false">
-            Equal-Sharing Fraction Bars
-          </button>
-          <button id="view-btn-numberline" class="view-mode-btn" type="button" aria-pressed="false">
-            Partitioned Number Line (0&ndash;4)
-          </button>
-        </div>
-      </div>
-
-      <!-- LXD Callout B: UDL Multiple Representations -->
-      <aside id="lxd-callout-udl" class="lxd-callout" aria-label="Learning Engineering Note on UDL Multiple Representations">
-        <div class="lxd-callout-header">
-          <span class="lxd-badge">LXD Note 02 · UDL Guideline 2.5 &amp; Representational Linking</span>
-          <span class="lxd-badge">LO1 · LO2 · LO3</span>
-        </div>
-        <h3>Synchronized Discrete Area Bars + Continuous Linear Magnitude</h3>
-        <p>
-          Learners often grasp equal sharing on discrete bars yet struggle to locate improper fractions as single points past <code>1</code> on a number line. In <strong>Linked Side-by-Side View</strong>, partitioning wholes into <code>b</code> parts simultaneously subdivides four whole bars and every integer interval <code>[0, 4]</code>. Complete whole units render in woven deep slate (<code>#264653</code>) while leftover <code>1/b</code> pieces render in stippled terracotta (<code>#C85A32</code>), visually scaffolding mixed-number grouping without spoiling the symbolic answer.
-        </p>
-      </aside>
-
-      <!-- Manipulative Stepper Controls -->
-      <div class="manipulative-toolbar">
-        <div class="control-cluster">
-          <div class="control-label-stack">
-            <label for="parts-per-whole-input" class="control-label">Equal Parts per Whole (Denominator <em>b</em>)</label>
-            <span id="parts-helper-text" class="control-sub">Partition each 1 whole into 1 to 10 equal parts</span>
-          </div>
-          <div class="stepper-box">
-            <button id="parts-dec-btn" class="stepper-btn" type="button" aria-label="Decrease equal parts per whole">&minus;</button>
-            <input
-              id="parts-per-whole-input"
-              class="stepper-input"
-              type="number"
-              min="1"
-              max="10"
-              step="1"
-              value="1"
-              inputmode="numeric"
-            >
-            <button id="parts-inc-btn" class="stepper-btn" type="button" aria-label="Increase equal parts per whole">+</button>
-          </div>
-        </div>
-
-        <div class="control-cluster">
-          <div class="control-label-stack">
-            <span class="control-label">Shaded Unit Pieces (Count of <em>1/b</em> Shares)</span>
-            <span id="shade-helper-text" class="control-sub">Click bar pieces, drag number line, or step +/-</span>
-          </div>
-          <div class="stepper-box">
-            <button id="shade-dec-btn" class="stepper-btn" type="button" aria-label="Unshade one unit piece">&minus;</button>
-            <output id="shaded-pieces-readout" class="shade-readout-pill" for="parts-per-whole-input numberline-range-slider">0 pieces</output>
-            <button id="shade-inc-btn" class="stepper-btn" type="button" aria-label="Shade one more unit piece">+</button>
-          </div>
-        </div>
-
-        <div class="toolbar-actions">
-          <button id="reset-workspace-btn" class="ghost-btn" type="button">Reset Model</button>
-        </div>
-      </div>
-
-      <!-- Dual Canvas: Fraction Bars & Number Line -->
-      <div id="representations-grid" class="representations-grid mode-linked">
-        <!-- Representation 1: Equal-Sharing Fraction Bars (4 Wholes) -->
-        <div id="bars-representation-pane" class="rep-pane rep-bars">
-          <div class="rep-pane-header">
-            <h3>Equal-Sharing Fraction Bars (4 Whole Units)</h3>
-            <span class="rep-instruction">Click any segment to shade from 0 up to that piece</span>
-          </div>
-          <div class="visual-legend" aria-label="Shading pattern key">
-            <span class="legend-item"><span class="legend-swatch swatch-whole" aria-hidden="true"></span>Complete Whole</span>
-            <span class="legend-item"><span class="legend-swatch swatch-partial" aria-hidden="true"></span>Leftover 1/b Pieces</span>
-            <span class="legend-item"><span class="legend-swatch swatch-empty" aria-hidden="true"></span>Unshaded</span>
-          </div>
-          <div id="fraction-bars-container" class="bars-stack" role="group" aria-label="Interactive fraction bars across 4 wholes">
-            <!-- Dynamically rendered accessible segment buttons -->
-          </div>
-        </div>
-
-        <!-- Representation 2: Partitioned Number Line (0 to 4) -->
-        <div id="numberline-representation-pane" class="rep-pane rep-numberline">
-          <div class="rep-pane-header">
-            <h3>Partitioned Number Line (0 to 4 Wholes)</h3>
-            <span class="rep-instruction">Click a tick mark or drag the marker along 0&ndash;4</span>
-          </div>
-          <div class="visual-legend" aria-label="Number line span key">
-            <span class="legend-item"><span class="legend-swatch swatch-whole" aria-hidden="true"></span>Full Integer Span</span>
-            <span class="legend-item"><span class="legend-swatch swatch-partial" aria-hidden="true"></span>Fractional Remainder Span</span>
-          </div>
-          <div class="numberline-stage">
-            <svg
-              id="numberline-svg"
-              class="numberline-svg"
-              viewBox="0 0 640 205"
-              role="img"
-              aria-label="Interactive partitioned number line from 0 to 4"
-            ></svg>
-            <div class="nl-slider-row">
-              <label for="numberline-range-slider" class="nl-slider-label">Keyboard / Fine Position:</label>
-              <input
-                id="numberline-range-slider"
-                class="nl-range-input"
-                type="range"
-                min="0"
-                max="4"
-                step="1"
-                value="0"
-              >
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="workspace-summary-strip" aria-live="polite">
-        <span id="live-model-description">Current visual workspace: each whole has <code>1</code> part; <code>0</code> pieces shaded.</span>
-        <span id="live-grouping-hint">Group complete dark-slate wholes and count any terracotta leftover pieces.</span>
-      </div>
-    </section>
-
-    <!-- Step 2 & Step 3: Symbolic Check Panel + Step-Level Diagnostic Engine -->
-    <div class="check-and-coach-grid">
-      <!-- Left: Symbolic & Conceptual Check Panel -->
-      <section class="symbolic-card" aria-labelledby="symbolic-panel-heading">
-        <div class="section-title-group">
-          <span class="step-eyebrow">Step 2 · LO1, LO2, LO3 &amp; LO4 Symbolic Check</span>
-          <h2 id="symbolic-panel-heading">Connect Symbols, Magnitude &amp; Reasoning</h2>
-        </div>
-
-        <!-- 2A: Fraction Quotient -->
-        <div class="substep-block">
-          <div class="substep-header">
-            <h3 class="substep-title">2A. Enter the Sharing Quotient as a Fraction</h3>
-            <span class="substep-lo-tag">LO1 · a &divide; b = a/b</span>
-          </div>
-          <p class="substep-helper">Write the exact fraction of one whole unit that a single share receives.</p>
-          <div class="equation-row">
-            <span id="symbolic-division-prompt" class="equation-prompt">10 hours &divide; 7 days =</span>
-            <div class="fraction-stack" role="group" aria-label="Fraction quotient entry">
-              <input
-                id="frac-num-input"
-                class="frac-input"
-                type="number"
-                min="0"
-                max="99"
-                step="1"
-                placeholder="Num"
-                aria-label="Fraction Numerator"
-                inputmode="numeric"
-              >
-              <span class="frac-bar" aria-hidden="true"></span>
-              <input
-                id="frac-den-input"
-                class="frac-input"
-                type="number"
-                min="1"
-                max="99"
-                step="1"
-                placeholder="Den"
-                aria-label="Fraction Denominator"
-                inputmode="numeric"
-              >
-            </div>
-            <span id="symbolic-fraction-unit" class="equation-unit">hours per day</span>
-          </div>
-        </div>
-
-        <!-- 2B: Quotient Magnitude -->
-        <div class="substep-block">
-          <div class="substep-header">
-            <h3 class="substep-title">2B. Compare One Share to 1 Whole Unit</h3>
-            <span class="substep-lo-tag">LO2 · Magnitude</span>
-          </div>
-          <div class="choice-list" role="radiogroup" aria-label="Quotient magnitude relative to 1 whole">
-            <label id="mag-card-lt1" class="choice-card" for="mag-radio-lt1">
-              <input id="mag-radio-lt1" type="radio" name="quotient-magnitude" value="lt1">
-              <span class="choice-text">
-                <strong>Less than 1 whole</strong>
-                <span class="choice-sub">Proper fraction &mdash; lands between 0 and 1 on the number line</span>
-              </span>
-            </label>
-            <label id="mag-card-eq1" class="choice-card" for="mag-radio-eq1">
-              <input id="mag-radio-eq1" type="radio" name="quotient-magnitude" value="eq1">
-              <span class="choice-text">
-                <strong>Equal to 1 whole</strong>
-                <span class="choice-sub">Exactly 1 full unit per recipient with no leftover pieces</span>
-              </span>
-            </label>
-            <label id="mag-card-gt1" class="choice-card" for="mag-radio-gt1">
-              <input id="mag-radio-gt1" type="radio" name="quotient-magnitude" value="gt1">
-              <span class="choice-text">
-                <strong>Greater than 1 whole &mdash; can write as a Mixed Number</strong>
-                <span class="choice-sub">Improper fraction &mdash; extends past 1 whole on the bars and number line</span>
-              </span>
-            </label>
-          </div>
-        </div>
-
-        <!-- 2C: Mixed Number Conversion (Active when > 1 whole selected) -->
-        <div class="substep-block">
-          <div class="substep-header">
-            <h3 class="substep-title">2C. Mixed-Number Equivalence (When &gt; 1 Whole)</h3>
-            <span class="substep-lo-tag">LO3 · Grouping Wholes</span>
-          </div>
-          <div id="mixed-number-note" class="mixed-status-note">
-            Select a magnitude above. When a share is <strong>greater than 1 whole</strong>, group complete wholes and enter the leftover fractional part here.
-          </div>
-          <div id="mixed-number-editor" class="equation-row" hidden>
-            <span class="equation-prompt">Mixed Number =</span>
-            <input
-              id="mixed-whole-input"
-              class="whole-input"
-              type="number"
-              min="0"
-              max="20"
-              step="1"
-              placeholder="Whole"
-              aria-label="Mixed number whole units"
-              inputmode="numeric"
-            >
-            <div class="fraction-stack" role="group" aria-label="Mixed number leftover fraction">
-              <input
-                id="mixed-num-input"
-                class="frac-input"
-                type="number"
-                min="0"
-                max="99"
-                step="1"
-                placeholder="Rem"
-                aria-label="Remainder Numerator"
-                inputmode="numeric"
-              >
-              <span class="frac-bar" aria-hidden="true"></span>
-              <input
-                id="mixed-den-input"
-                class="frac-input"
-                type="number"
-                min="1"
-                max="99"
-                step="1"
-                placeholder="Den"
-                aria-label="Remainder Denominator"
-                inputmode="numeric"
-              >
-            </div>
-            <span id="symbolic-mixed-unit" class="equation-unit">hours per day</span>
-          </div>
-        </div>
-
-        <!-- 2D: 3-Option Conceptual Justification -->
-        <div class="substep-block">
-          <div class="substep-header">
-            <h3 class="substep-title">2D. Justify Why This Quotient Works in Context</h3>
-            <span class="substep-lo-tag">LO4 · Justification</span>
-          </div>
-          <p class="substep-helper">Choose the statement that accurately explains one equal share using real-world units.</p>
-          <div id="justification-options-container" class="choice-list" role="radiogroup" aria-label="Conceptual justification choices">
-            <!-- Populated by app.js with deterministic radio IDs just-radio-A, just-radio-B, just-radio-C -->
-          </div>
-        </div>
-
-        <!-- Action Buttons -->
-        <div class="symbolic-actions">
-          <button id="check-work-btn" class="primary-btn" type="button">Check My Work</button>
-          <button id="request-hint-btn" class="secondary-btn" type="button">Get a Hint (0/2)</button>
-          <button id="clear-symbolic-btn" class="ghost-btn" type="button">Clear Symbolic Inputs</button>
-        </div>
-      </section>
-
-      <!-- Right: Step-Level Misconception Diagnostic Coach -->
-      <section class="diagnostic-card" aria-labelledby="diagnostic-panel-heading">
-        <div class="section-title-group">
-          <span class="step-eyebrow">Step 3 · Real-Time Coaching</span>
-          <h2 id="diagnostic-panel-heading">Step-Level Misconception Diagnostics</h2>
-        </div>
-
-        <!-- LXD Callout C: AGENTS.md Diagnostic Specification -->
-        <aside id="lxd-callout-diagnostics" class="lxd-callout" aria-label="Learning Engineering Note on Step-Level Diagnostic Engine">
-          <div class="lxd-callout-header">
-            <span class="lxd-badge">LXD Note 03 · AGENTS.md Diagnostic Rule Tree</span>
-            <span class="lxd-badge">Zero Client API Keys</span>
-          </div>
-          <h3>Deterministic Multi-Signal Misconception Detection</h3>
-          <p>
-            Rather than sending student work to an unpredictable LLM or giving binary right/wrong alerts, <code>AGENTS.md</code> specifies an ordered rule evaluator over <code>(partsPerWhole, shadedParts, num/den, magnitude, mixedNumber, justification)</code>. It pinpoints Corina&rsquo;s documented pitfalls: <strong>Unit Omission</strong> (<code>10/1</code>), <strong>Dividend/Divisor Inversion</strong> (<code>7/10</code>, <code>5/3</code>), <strong>Visual&ndash;Symbolic Mismatch</strong>, and <strong>Remainder-Denominator Errors</strong> (<code>1 3/10</code> instead of <code>1 3/7</code>) without giving away answers on Attempt 1.
-          </p>
-        </aside>
-
-        <!-- Readiness Checklist -->
-        <div class="readiness-grid" aria-label="Submission readiness status">
-          <div id="ready-visual" class="readiness-pill">
-            <span>1. Visual Model</span>
-            <span id="ready-visual-state">Pending</span>
-          </div>
-          <div id="ready-fraction" class="readiness-pill">
-            <span>2. Fraction a/b</span>
-            <span id="ready-fraction-state">Pending</span>
-          </div>
-          <div id="ready-magnitude" class="readiness-pill">
-            <span>3. Magnitude</span>
-            <span id="ready-magnitude-state">Pending</span>
-          </div>
-          <div id="ready-justification" class="readiness-pill">
-            <span>4. Justification</span>
-            <span id="ready-justification-state">Pending</span>
-          </div>
-        </div>
-
-        <!-- Diagnostic Output Box -->
-        <div id="diagnostic-output-box" class="diagnostic-box" role="region" aria-live="polite" aria-label="Diagnostic feedback">
-          <span id="diag-category-badge" class="diag-badge">Ready to Diagnose</span>
-          <h3 id="diag-heading" class="diag-title">Build Your Model &amp; Test Your Reasoning</h3>
-          <p id="diag-message" class="diag-body">
-            Start in <strong>Step 1</strong> by partitioning each whole unit and shading one share on the fraction bars or number line. Then complete <strong>Step 2</strong> and select <strong>Check My Work</strong> for step-level feedback.
-          </p>
-          <p id="diag-socratic-prompt" class="diag-prompt" hidden></p>
-          <ul id="diag-verified-list" class="verified-summary-list" hidden></ul>
-          <button id="next-problem-cta-btn" class="next-problem-btn" type="button" hidden>Continue to Next Problem &rarr;</button>
-        </div>
-
-        <!-- Progressive 2-Step Hints Container -->
-        <div id="hints-output-container" class="hints-container" aria-live="polite"></div>
-      </section>
     </div>
 
-    <!-- Course Mastery Synthesis Banner (Shown upon solving all 4 problems) -->
-    <section id="course-mastery-card" class="mastery-summary-card" aria-labelledby="mastery-heading" hidden>
-      <h2 id="mastery-heading">All 4 Equal-Sharing Scenarios Mastered (LO1&ndash;LO4)</h2>
-      <p>
-        Across every scenario, sharing <strong>a</strong> units equally among <strong>b</strong> recipients always yields <strong>a &divide; b = a/b</strong> of one whole unit per recipient &mdash; whether that quotient is a proper fraction less than 1 whole or an improper fraction grouped into whole units and leftover <code>1/b</code> parts.
-      </p>
-      <div class="mastery-table-wrap">
-        <table class="mastery-table">
-          <thead>
-            <tr>
-              <th>Scenario</th>
-              <th>Division</th>
-              <th>Fraction Share</th>
-              <th>Magnitude (LO2)</th>
-              <th>Mixed / Contextual Meaning (LO3 &amp; LO4)</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>1. Weekly Chores</td>
-              <td><code>10 &divide; 7</code></td>
-              <td><code>10/7</code> hr/day</td>
-              <td><code>&gt; 1 whole</code></td>
-              <td><code>1 3/7</code> hours of chores per day (converting 1 week = 7 days)</td>
-            </tr>
-            <tr>
-              <td>2. Trail Granola</td>
-              <td><code>7 &divide; 4</code></td>
-              <td><code>7/4</code> bars/hiker</td>
-              <td><code>&gt; 1 whole</code></td>
-              <td><code>1 3/4</code> granola bars per hiker (1 whole bar + three 1/4 pieces)</td>
-            </tr>
-            <tr>
-              <td>3. Mural Paint</td>
-              <td><code>3 &divide; 5</code></td>
-              <td><code>3/5</code> L/board</td>
-              <td><code>&lt; 1 whole</code></td>
-              <td><code>3/5</code> liter per poster board (proper fraction; 0 full liters)</td>
-            </tr>
-            <tr>
-              <td>4. Stage Banners</td>
-              <td><code>11 &divide; 3</code></td>
-              <td><code>11/3</code> yds/banner</td>
-              <td><code>&gt; 1 whole</code></td>
-              <td><code>3 2/3</code> yards of fabric per banner (3 full yards + two 1/3 pieces)</td>
-            </tr>
-          </tbody>
-        </table>
+    <nav class="lesson-nav" aria-label="Lessons">
+      <div class="lesson-nav-section-label">Course Lessons</div>
+
+      <button type="button" class="lesson-nav-item is-active" id="nav-lesson-1" data-lesson="1">
+        <svg class="rise-ring" id="ring-lesson-1" viewBox="0 0 24 24" aria-hidden="true"></svg>
+        <span class="lesson-nav-text">
+          <span class="lesson-nav-title">Lesson 1: Fractions as Fair Sharing</span>
+          <span class="lesson-nav-sub">Color Guide, Audio &amp; Cookie Share</span>
+        </span>
+      </button>
+
+      <button type="button" class="lesson-nav-item" id="nav-lesson-2" data-lesson="2">
+        <svg class="rise-ring" id="ring-lesson-2" viewBox="0 0 24 24" aria-hidden="true"></svg>
+        <span class="lesson-nav-text">
+          <span class="lesson-nav-title">Lesson 2: Scenario — Help Rue Out!</span>
+          <span class="lesson-nav-sub">Interactive 10 ÷ 7 Chores Builder</span>
+        </span>
+      </button>
+
+      <button type="button" class="lesson-nav-item" id="nav-lesson-3" data-lesson="3">
+        <svg class="rise-ring" id="ring-lesson-3" viewBox="0 0 24 24" aria-hidden="true"></svg>
+        <span class="lesson-nav-text">
+          <span class="lesson-nav-title">Lesson 3: Equal-Sharing Studio</span>
+          <span class="lesson-nav-sub">3 Real-Life Sharing Challenges</span>
+        </span>
+      </button>
+    </nav>
+
+    <div class="sidebar-color-key" aria-label="Fraction Color Key">
+      <div class="sidebar-key-heading">Fraction Color Code</div>
+      <div class="sidebar-key-row">
+        <span class="key-dot key-dot-blue" aria-hidden="true"></span>
+        <span><span class="text-num-blue">Blue</span> = Numerator (pieces you get)</span>
+      </div>
+      <div class="sidebar-key-row">
+        <span class="key-dot key-dot-green" aria-hidden="true"></span>
+        <span><span class="text-den-green">Green</span> = Denominator (parts in 1 whole)</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Course Content Canvas -->
+  <main class="course-main" id="main-content">
+
+    <!-- ==================================================================
+         LESSON 1: Fractions as Fair Sharing (Pre-Training + Modality)
+         ================================================================== -->
+    <section class="lesson-view is-active" id="lesson-1" aria-labelledby="l1-heading">
+      <div class="lesson-inner-reading">
+        <span class="rise-kicker">Lesson 1 of 3</span>
+        <h2 class="rise-lesson-title" id="l1-heading">Fractions as Fair Sharing</h2>
+        <div class="rise-accent-bar" aria-hidden="true"></div>
+
+        <p class="rise-prose">
+          Have you ever wondered how to share something equally when it doesn’t divide into whole numbers—like splitting snacks with friends, dividing art supplies, or planning weekly chores? Whenever you share fairly, <strong>division</strong> and <strong>fractions</strong> work together to tell you exact fair shares!
+        </p>
+
+        <!-- Block 1: Color-Coded Fraction Guide + 4-Card Audio/Visual Flip Strip -->
+        <div class="l1-block">
+          <h3 class="l1-block-title">1. Meet the Two Parts of Every Fraction</h3>
+          <p class="rise-prose" style="margin-bottom: 10px; font-size: 0.92rem;">
+            Across this entire course, we use <strong>two consistent colors</strong> so you can always see how a visual diagram connects to a written fraction:
+          </p>
+
+          <div class="l1-guide-grid">
+            <div class="l1-guide-img-wrap">
+              <img src="assets/num-den-color-guide.png" alt="2 over 5 fraction diagram: blue 2 is numerator (number of parts we have) and green 5 is denominator (total parts in whole)" class="l1-guide-img" width="550" height="199">
+            </div>
+            <div class="l1-signaling-pills">
+              <div class="signal-callout signal-callout-blue">
+                <strong>Blue = Numerator (Top Number)</strong><br>
+                Counts <em>how many equal pieces</em> one fair share gets.
+              </div>
+              <div class="signal-callout signal-callout-green">
+                <strong>Green = Denominator (Bottom Number)</strong><br>
+                Tells <em>how many equal parts</em> <strong>1 whole</strong> is cut into.
+              </div>
+            </div>
+          </div>
+
+          <!-- 4-Card Interactive Flip Strip + Optional Corina Voiceover -->
+          <p style="margin: 16px 0 6px; font-size: 0.82rem; font-weight: 700; color: var(--ink-muted);">
+            Click any card below to flip it, or press <strong>🔊 Listen</strong> to hear a quick voice explanation:
+          </p>
+
+          <div class="flip-strip-grid">
+            <!-- Card 1: Fraction -->
+            <div class="vocab-card" id="vocab-card-fraction">
+              <button type="button" class="vocab-flip-trigger" id="flip-btn-fraction" aria-expanded="false">
+                <span class="vocab-badge vocab-badge-neutral">
+                  <span class="text-num-blue">a</span>&nbsp;/&nbsp;<span class="text-den-green">b</span>
+                </span>
+                <span class="vocab-term">Fraction</span>
+                <span class="vocab-front-hint">Tap to see meaning ↻</span>
+                <span class="vocab-back-meaning">A number that shows fair parts of a whole, written with a <strong class="text-num-blue">blue numerator</strong> over a <strong class="text-den-green">green denominator</strong>.</span>
+              </button>
+              <button type="button" class="audio-listen-btn" id="audio-btn-fraction" data-audio="assets/audio-fraction.mp3">
+                🔊 Listen
+              </button>
+            </div>
+
+            <!-- Card 2: Numerator -->
+            <div class="vocab-card" id="vocab-card-numerator">
+              <button type="button" class="vocab-flip-trigger" id="flip-btn-numerator" aria-expanded="false">
+                <span class="vocab-badge vocab-badge-blue">Top #</span>
+                <span class="vocab-term">Numerator</span>
+                <span class="vocab-front-hint">Tap to see meaning ↻</span>
+                <span class="vocab-back-meaning">The <strong class="text-num-blue">blue top number</strong>—how many equal pieces <strong>you get</strong> in one fair share.</span>
+              </button>
+              <button type="button" class="audio-listen-btn" id="audio-btn-numerator" data-audio="assets/audio-numerator.mp3">
+                🔊 Listen
+              </button>
+            </div>
+
+            <!-- Card 3: Denominator -->
+            <div class="vocab-card" id="vocab-card-denominator">
+              <button type="button" class="vocab-flip-trigger" id="flip-btn-denominator" aria-expanded="false">
+                <span class="vocab-badge vocab-badge-green">Bottom #</span>
+                <span class="vocab-term">Denominator</span>
+                <span class="vocab-front-hint">Tap to see meaning ↻</span>
+                <span class="vocab-back-meaning">The <strong class="text-den-green">green bottom number</strong>—how many equal pieces <strong>1 single whole</strong> is cut into.</span>
+              </button>
+              <button type="button" class="audio-listen-btn" id="audio-btn-denominator" data-audio="assets/audio-denominator.mp3">
+                🔊 Listen
+              </button>
+            </div>
+
+            <!-- Card 4: Division -->
+            <div class="vocab-card" id="vocab-card-division">
+              <button type="button" class="vocab-flip-trigger" id="flip-btn-division" aria-expanded="false">
+                <span class="vocab-badge vocab-badge-orange">a ÷ b</span>
+                <span class="vocab-term">Division = Fraction</span>
+                <span class="vocab-front-hint">Tap to see meaning ↻</span>
+                <span class="vocab-back-meaning">
+                  Sharing <strong>3</strong> pizzas among <strong>5</strong> friends (<code>3 ÷ 5</code>) gives everyone <strong>3/5</strong> of a pizza!
+                  <img src="assets/pizza-three-fifths.png" alt="3/5 of a pizza" class="vocab-pizza-mini">
+                </span>
+              </button>
+              <button type="button" class="audio-listen-btn" id="audio-btn-division" data-audio="assets/audio-division.mp3">
+                🔊 Listen
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Block 2: Worked Example — 3 Cookies Shared by 4 Friends -->
+        <div class="l1-block">
+          <h3 class="l1-block-title">2. See It in Action: 3 Chocolate-Chip Cookies Shared by 4 Friends</h3>
+          <p class="rise-prose" style="margin-bottom: 8px; font-size: 0.92rem;">
+            Suppose <strong>4 friends</strong> want to share <strong>3 warm chocolate-chip cookies</strong> equally (<code>3 ÷ 4</code>). There aren’t enough cookies for everyone to get 1 whole cookie—so we cut each cookie into <strong class="text-den-green">4 equal fourths</strong>!
+          </p>
+
+          <div class="cookie-stage-grid">
+            <div class="cookie-visual-box" id="cookie-visual-box" role="button" tabindex="0" aria-label="Interactive 3 cookies split into fourths diagram">
+              <img src="assets/cookies-split-4.jpg" alt="Three chocolate-chip cookies each cut into four equal fourths" class="cookie-img" width="1100" height="618">
+              <svg class="cookie-overlay-svg" viewBox="0 0 1100 618" aria-hidden="true">
+                <!-- Green 4-part cut crosshairs & rings on all 3 cookies -->
+                <g class="cookie-cut-group" stroke="#2E8B57" stroke-width="6">
+                  <circle cx="310" cy="322" r="106" fill="none" />
+                  <line x1="310" y1="214" x2="310" y2="430" />
+                  <line x1="202" y1="322" x2="418" y2="322" />
+
+                  <circle cx="556" cy="323" r="107" fill="none" />
+                  <line x1="556" y1="214" x2="556" y2="432" />
+                  <line x1="447" y1="323" x2="665" y2="323" />
+
+                  <circle cx="801" cy="323" r="108" fill="none" />
+                  <line x1="801" y1="213" x2="801" y2="433" />
+                  <line x1="691" y1="323" x2="911" y2="323" />
+                </g>
+
+                <!-- Blue 1/4 share wedge from each of the 3 cookies -->
+                <g class="cookie-share-wedge">
+                  <path d="M 310 322 L 204 322 A 106 106 0 0 1 310 216 Z" fill="rgba(37, 99, 235, 0.52)" stroke="#1D4ED8" stroke-width="5" />
+                  <rect x="228" y="160" width="96" height="36" rx="18" fill="#2563EB" />
+                  <text x="276" y="184" text-anchor="middle" fill="#FFFFFF" font-family="Lato, sans-serif" font-weight="900" font-size="21">+ 1/4</text>
+
+                  <path d="M 556 323 L 449 323 A 107 107 0 0 1 556 216 Z" fill="rgba(37, 99, 235, 0.52)" stroke="#1D4ED8" stroke-width="5" />
+                  <rect x="476" y="160" width="96" height="36" rx="18" fill="#2563EB" />
+                  <text x="524" y="184" text-anchor="middle" fill="#FFFFFF" font-family="Lato, sans-serif" font-weight="900" font-size="21">+ 1/4</text>
+
+                  <path d="M 801 323 L 693 323 A 108 108 0 0 1 801 215 Z" fill="rgba(37, 99, 235, 0.52)" stroke="#1D4ED8" stroke-width="5" />
+                  <rect x="721" y="160" width="96" height="36" rx="18" fill="#2563EB" />
+                  <text x="769" y="184" text-anchor="middle" fill="#FFFFFF" font-family="Lato, sans-serif" font-weight="900" font-size="21">+ 1/4</text>
+                </g>
+              </svg>
+            </div>
+
+            <div>
+              <button type="button" class="cookie-action-btn" id="cookie-deal-btn">
+                ✨ Highlight 1 Friend’s Fair Share (3 ÷ 4)
+              </button>
+              <div class="cookie-equation-result" id="cookie-equation-result" aria-live="polite">
+                Click the button above (or tap the cookies!) to take <strong>1 fourth</strong> from each of the 3 cookies.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="l1-continue-bar">
+          <span style="font-size: 0.84rem; color: var(--ink-muted); font-weight: 700;">
+            Next up: Help Rue split a week of chores when the share is <em>more than 1 whole</em>!
+          </span>
+          <button type="button" class="rise-continue-btn" id="l1-continue-btn">
+            Continue to Help Rue Out! ➔
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================================================================
+         LESSON 2: Scenario — Help Rue Out! (Single-Viewport 3-Step Studio)
+         ================================================================== -->
+    <section class="lesson-view" id="lesson-2" aria-labelledby="l2-heading">
+      <div class="lesson-inner-studio">
+        <div class="studio-topbar">
+          <div class="studio-heading-group">
+            <span class="studio-lesson-tag">Lesson 2 of 3</span>
+            <h2 class="studio-title" id="l2-heading">Scenario — Help Rue Out!</h2>
+          </div>
+
+          <div class="step-pills" role="tablist" aria-label="Help Rue Steps">
+            <button type="button" class="step-pill is-active" id="l2-step-pill-1" data-step="1">
+              1. Set Up Problem
+            </button>
+            <button type="button" class="step-pill" id="l2-step-pill-2" data-step="2">
+              2. Build Model (10 ÷ 7)
+            </button>
+            <button type="button" class="step-pill" id="l2-step-pill-3" data-step="3">
+              3. Mixed Number
+            </button>
+          </div>
+        </div>
+
+        <!-- Authentic Rise 360 Scenario Frame with Expressive Rue Cutout -->
+        <div class="rue-scenario-banner" id="l2-rue-banner">
+          <div class="rue-avatar-stage">
+            <img src="assets/rue-asking.png" alt="Rue character" class="rue-character-img" id="l2-rue-img" width="92" height="112">
+            <span class="rue-name-chip">Rue</span>
+          </div>
+          <div class="rue-speech-bubble">
+            <p class="rue-speech-text" id="l2-rue-speech">
+              “Hi! This week I need to spend <strong>10 hours</strong> on chores spread evenly across <strong>1 week (7 days)</strong>. How should I set up this problem to find my <strong>hours per day</strong>?”
+            </p>
+          </div>
+        </div>
+
+        <!-- STEP 2.1: Choose Operation & Convert 1 Week = 7 Days -->
+        <div class="step21-panel" id="l2-step-1-view">
+          <p class="step21-prompt-label">Which setup finds how many hours of chores Rue will do each day?</p>
+
+          <div class="choice-cards-grid">
+            <button type="button" class="scenario-choice-btn" id="l2-choice-mult" data-choice="mult">
+              <span class="choice-letter">A</span>
+              <span>
+                <span class="choice-label-main">Multiply: 10 hours × 7 days</span>
+                <span class="choice-label-sub">Find the product of hours and days (70)</span>
+              </span>
+            </button>
+
+            <button type="button" class="scenario-choice-btn" id="l2-choice-add" data-choice="add">
+              <span class="choice-letter">B</span>
+              <span>
+                <span class="choice-label-main">Add: 10 hours + 7 days</span>
+                <span class="choice-label-sub">Combine hours and days together (17)</span>
+              </span>
+            </button>
+
+            <button type="button" class="scenario-choice-btn" id="l2-choice-unit1" data-choice="unit1">
+              <span class="choice-letter">C</span>
+              <span>
+                <span class="choice-label-main">Divide by 1 week: 10 hours ÷ 1</span>
+                <span class="choice-label-sub">Keep “1” as the number we divide by</span>
+              </span>
+            </button>
+
+            <button type="button" class="scenario-choice-btn" id="l2-choice-correct" data-choice="correct">
+              <span class="choice-letter">D</span>
+              <span>
+                <span class="choice-label-main">Divide by 7 days: <span class="text-num-blue">10 hours</span> ÷ <span class="text-den-green">7 days</span></span>
+                <span class="choice-label-sub">Convert 1 week = 7 days and split 10 hours equally</span>
+              </span>
+            </button>
+          </div>
+
+          <div class="diagnostic-box" id="l2-step1-diag" aria-live="polite">
+            Pick an option above to help Rue set up her daily chore schedule!
+          </div>
+
+          <div class="diag-next-wrap" id="l2-step1-next-wrap" hidden>
+            <button type="button" class="rise-continue-btn rise-continue-btn-compact" id="l2-to-step2-btn">
+              Continue to Step 2: Build the Visual Model ➔
+            </button>
+          </div>
+        </div>
+
+        <!-- STEP 2.2 & STEP 2.3: Side-by-Side Single-Viewport Linked Workspace -->
+        <div class="workspace-split-grid" id="l2-split-workspace" hidden>
+          <!-- Left Column: Linked Tactile Fraction Bars + 0..2 Number Line -->
+          <div class="manipulative-card">
+            <div class="manip-toolbar">
+              <div class="view-mode-group" role="group" aria-label="Visual Representation Mode">
+                <button type="button" class="view-mode-btn is-active" id="l2-view-both" data-view="both" aria-pressed="true">Both Linked</button>
+                <button type="button" class="view-mode-btn" id="l2-view-bars" data-view="bars" aria-pressed="false">Fraction Bars</button>
+                <button type="button" class="view-mode-btn" id="l2-view-line" data-view="line" aria-pressed="false">Number Line</button>
+              </div>
+              <div class="manip-utility-btns" id="l2-utility-btns">
+                <button type="button" class="hint-btn" id="l2-hint-btn">💡 Hint (0/2)</button>
+                <button type="button" class="reset-mini-btn" id="l2-reset-btn">↺ Reset</button>
+              </div>
+            </div>
+
+            <!-- Green & Blue Steppers (Active in Step 2.2, Locked in Step 2.3) -->
+            <div class="stepper-controls-row" id="l2-stepper-row">
+              <div class="stepper-box stepper-box-green" id="l2-green-stepper-box">
+                <div class="stepper-label">
+                  Cut 1 Whole Hour
+                  <span>Equal parts (Green)</span>
+                </div>
+                <div class="stepper-widget">
+                  <button type="button" class="step-btn step-btn-green" id="l2-parts-dec" aria-label="Decrease equal parts per hour">−</button>
+                  <span class="step-val" id="l2-parts-val">1</span>
+                  <button type="button" class="step-btn step-btn-green" id="l2-parts-inc" aria-label="Increase equal parts per hour">+</button>
+                </div>
+              </div>
+
+              <div class="stepper-box stepper-box-blue" id="l2-blue-stepper-box">
+                <div class="stepper-label">
+                  1 Day’s Share
+                  <span>Shaded pieces (Blue)</span>
+                </div>
+                <div class="stepper-widget">
+                  <button type="button" class="step-btn step-btn-blue" id="l2-shaded-dec" aria-label="Decrease shaded pieces">−</button>
+                  <span class="step-val" id="l2-shaded-val">0</span>
+                  <button type="button" class="step-btn step-btn-blue" id="l2-shaded-inc" aria-label="Increase shaded pieces">+</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="hint-banner" id="l2-hint-banner" hidden></div>
+
+            <div class="linked-visual-stage">
+              <div class="bars-row-aligned" id="l2-bars-container" aria-label="1-Hour Fraction Bars"></div>
+
+              <div class="numberline-wrap" id="l2-numberline-wrap">
+                <svg class="numberline-svg" id="l2-numberline-svg" viewBox="0 0 520 118" aria-label="0 to 2 hours interactive number line"></svg>
+              </div>
+
+              <div class="slider-assist-row" id="l2-slider-row">
+                <label for="l2-range-slider" class="sr-only">Adjust shaded pieces along the number line</label>
+                <input type="range" class="nl-range-slider" id="l2-range-slider" min="0" max="2" value="0" step="1">
+                <span class="live-physical-readout" id="l2-physical-readout">0 pieces shaded · 1 part per hour</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Step 2.2 Fraction Check OR Step 2.3 Mixed Number Check -->
+          <div class="symbolic-card">
+            <!-- Step 2.2 Right Panel -->
+            <div id="l2-step2-right">
+              <h3 class="symbolic-card-header">Write 1 Day’s Share as a Fraction (10 ÷ 7)</h3>
+              <p style="margin: 0 0 8px; font-size: 0.78rem; color: var(--ink-muted);">
+                Click bar slices or drag the dot on the left, then write your <strong class="text-num-blue">Blue Numerator</strong> and <strong class="text-den-green">Green Denominator</strong>:
+              </p>
+
+              <div class="fraction-entry-box">
+                <div class="frac-widget">
+                  <label for="l2-frac-num" class="sr-only">Numerator (pieces in 1 day's share)</label>
+                  <input type="number" inputmode="numeric" class="frac-input frac-input-num" id="l2-frac-num" min="0" max="40" placeholder="?">
+                  <div class="frac-vinculum" aria-hidden="true"></div>
+                  <label for="l2-frac-den" class="sr-only">Denominator (equal parts in 1 hour)</label>
+                  <input type="number" inputmode="numeric" class="frac-input frac-input-den" id="l2-frac-den" min="1" max="20" placeholder="?">
+                </div>
+                <div class="frac-side-labels">
+                  <span class="frac-tag-blue">← Pieces in 1 share</span>
+                  <span class="frac-unit-caption">hours per day</span>
+                  <span class="frac-tag-green">← Parts in 1 whole hr</span>
+                </div>
+              </div>
+
+              <button type="button" class="sync-from-model-btn" id="l2-sync-model-btn">
+                ⇄ Fill boxes from my shaded model
+              </button>
+
+              <button type="button" class="check-work-btn" id="l2-check-step2-btn">
+                Check My Model &amp; Fraction
+              </button>
+
+              <div class="diagnostic-box" id="l2-step2-diag" aria-live="polite">
+                Cut each 1-hour bar into equal daily parts (<span class="text-den-green">green</span>), shade one day’s share (<span class="text-num-blue">blue</span>), and click <strong>Check</strong>!
+              </div>
+
+              <div class="diag-next-wrap" id="l2-step2-next-wrap" hidden>
+                <button type="button" class="rise-continue-btn rise-continue-btn-compact" id="l2-to-step3-btn">
+                  Continue to Step 3: Mixed Number ➔
+                </button>
+              </div>
+            </div>
+
+            <!-- Step 2.3 Right Panel -->
+            <div id="l2-step3-right" hidden>
+              <h3 class="symbolic-card-header">Group 10/7 into a Mixed Number &amp; Explain</h3>
+
+              <div class="mixed-entry-panel">
+                <div class="mixed-widget-row">
+                  <span class="mixed-eq-prefix">
+                    <span class="inline-frac"><span class="inline-frac-num">10</span><span class="inline-frac-den">7</span></span> =
+                  </span>
+                  <label for="l2-mix-whole" class="sr-only">Whole hours</label>
+                  <input type="number" inputmode="numeric" class="frac-input frac-input-whole" id="l2-mix-whole" min="0" max="10" placeholder="W">
+                  <div class="frac-widget">
+                    <label for="l2-mix-num" class="sr-only">Leftover numerator pieces</label>
+                    <input type="number" inputmode="numeric" class="frac-input frac-input-num" id="l2-mix-num" min="0" max="20" placeholder="?">
+                    <div class="frac-vinculum" aria-hidden="true"></div>
+                    <label for="l2-mix-den" class="sr-only">Mixed fraction denominator</label>
+                    <input type="number" inputmode="numeric" class="frac-input frac-input-den" id="l2-mix-den" min="1" max="20" placeholder="?">
+                  </div>
+                  <span class="frac-unit-caption">hrs/day</span>
+                </div>
+                <div class="mixed-ref-mini">
+                  <img src="assets/mixed-fractions-guide.png" alt="Mixed fraction = whole number + proper fraction" width="96" height="36">
+                  <span><strong>Whole #</strong> = full 1-hour bars · <strong>Fraction</strong> = leftover <span class="text-num-blue">blue</span> pieces over <span class="text-den-green">green</span> parts in 1 hour</span>
+                </div>
+              </div>
+
+              <p class="sub-question-label">Why does this daily amount make sense?</p>
+              <div class="justif-list" role="radiogroup" aria-label="Explain why your mixed number makes sense">
+                <button type="button" class="justif-option" id="l2-just-a" data-just="correct" aria-checked="false" role="radio">
+                  <span><strong>A.</strong> 7 sevenths make <strong>1 full hour</strong>, with <strong>3 sevenths of an hour</strong> left over each day.</span>
+                </button>
+                <button type="button" class="justif-option" id="l2-just-b" data-just="rem10" aria-checked="false" role="radio">
+                  <span><strong>B.</strong> 1 full hour plus <strong>3 tenths</strong> of an hour because Rue has 10 total hours.</span>
+                </button>
+                <button type="button" class="justif-option" id="l2-just-c" data-just="lt1" aria-checked="false" role="radio">
+                  <span><strong>C.</strong> Less than 1 hour per day because 7 days is a long week.</span>
+                </button>
+              </div>
+
+              <button type="button" class="check-work-btn" id="l2-check-step3-btn">
+                Check Mixed Number &amp; Explanation
+              </button>
+
+              <div class="diagnostic-box" id="l2-step3-diag" aria-live="polite">
+                Look at your model on the left: count complete 1-hour bars and leftover pieces in Hour 2!
+              </div>
+
+              <div class="diag-next-wrap" id="l2-step3-next-wrap" hidden>
+                <button type="button" class="rise-continue-btn rise-continue-btn-compact" id="l2-to-lesson3-btn">
+                  Continue to Lesson 3: Equal-Sharing Studio ➔
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================================================================
+         LESSON 3: Equal-Sharing Studio (3 Transfer Challenges, 1 at a Time)
+         ================================================================== -->
+    <section class="lesson-view" id="lesson-3" aria-labelledby="l3-heading">
+      <div class="lesson-inner-studio">
+        <div class="studio-topbar">
+          <div class="studio-heading-group">
+            <span class="studio-lesson-tag">Lesson 3 of 3</span>
+            <h2 class="studio-title" id="l3-heading">Equal-Sharing Studio</h2>
+          </div>
+
+          <div class="step-pills" role="tablist" aria-label="Equal-Sharing Challenges">
+            <button type="button" class="step-pill is-active" id="l3-chal-pill-0" data-chal="0">
+              1. Muffins (13 ÷ 5)
+            </button>
+            <button type="button" class="step-pill" id="l3-chal-pill-1" data-chal="1">
+              2. Paint (3 ÷ 5)
+            </button>
+            <button type="button" class="step-pill" id="l3-chal-pill-2" data-chal="2">
+              3. Granola (7 ÷ 4)
+            </button>
+          </div>
+        </div>
+
+        <!-- Rue Scenario Prompt Banner -->
+        <div class="rue-scenario-banner" id="l3-rue-banner">
+          <div class="rue-avatar-stage">
+            <img src="assets/rue-talking.png" alt="Rue character" class="rue-character-img" id="l3-rue-img" width="92" height="112">
+            <span class="rue-name-chip">Rue</span>
+          </div>
+          <div class="rue-speech-bubble">
+            <p class="rue-speech-text" id="l3-rue-speech"></p>
+          </div>
+        </div>
+
+        <!-- Single-Viewport Split Workspace -->
+        <div class="workspace-split-grid">
+          <!-- Left: Manipulative -->
+          <div class="manipulative-card">
+            <div class="manip-toolbar">
+              <div class="view-mode-group" role="group" aria-label="Studio Visual Representation Mode">
+                <button type="button" class="view-mode-btn is-active" id="l3-view-both" data-view="both" aria-pressed="true">Both Linked</button>
+                <button type="button" class="view-mode-btn" id="l3-view-bars" data-view="bars" aria-pressed="false">Fraction Bars</button>
+                <button type="button" class="view-mode-btn" id="l3-view-line" data-view="line" aria-pressed="false">Number Line</button>
+              </div>
+              <div class="manip-utility-btns">
+                <button type="button" class="hint-btn" id="l3-hint-btn">💡 Hint (0/2)</button>
+                <button type="button" class="reset-mini-btn" id="l3-reset-btn">↺ Reset</button>
+              </div>
+            </div>
+
+            <div class="stepper-controls-row">
+              <div class="stepper-box stepper-box-green" id="l3-green-stepper-box">
+                <div class="stepper-label">
+                  Cut 1 Whole
+                  <span>Equal parts (Green)</span>
+                </div>
+                <div class="stepper-widget">
+                  <button type="button" class="step-btn step-btn-green" id="l3-parts-dec" aria-label="Decrease equal parts per whole">−</button>
+                  <span class="step-val" id="l3-parts-val">1</span>
+                  <button type="button" class="step-btn step-btn-green" id="l3-parts-inc" aria-label="Increase equal parts per whole">+</button>
+                </div>
+              </div>
+
+              <div class="stepper-box stepper-box-blue" id="l3-blue-stepper-box">
+                <div class="stepper-label">
+                  1 Fair Share
+                  <span>Shaded pieces (Blue)</span>
+                </div>
+                <div class="stepper-widget">
+                  <button type="button" class="step-btn step-btn-blue" id="l3-shaded-dec" aria-label="Decrease shaded pieces">−</button>
+                  <span class="step-val" id="l3-shaded-val">0</span>
+                  <button type="button" class="step-btn step-btn-blue" id="l3-shaded-inc" aria-label="Increase shaded pieces">+</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="hint-banner" id="l3-hint-banner" hidden></div>
+
+            <div class="linked-visual-stage">
+              <div class="bars-row-aligned" id="l3-bars-container" aria-label="Equal-sharing fraction bars"></div>
+
+              <div class="numberline-wrap" id="l3-numberline-wrap">
+                <svg class="numberline-svg" id="l3-numberline-svg" viewBox="0 0 520 118" aria-label="Interactive sharing number line"></svg>
+              </div>
+
+              <div class="slider-assist-row">
+                <label for="l3-range-slider" class="sr-only">Adjust shaded pieces along studio number line</label>
+                <input type="range" class="nl-range-slider" id="l3-range-slider" min="0" max="3" value="0" step="1">
+                <span class="live-physical-readout" id="l3-physical-readout">0 pieces shaded · 1 part per whole</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Fraction + Magnitude (<1 vs >1) + Conditional Mixed Number -->
+          <div class="symbolic-card">
+            <h3 class="symbolic-card-header" id="l3-right-heading">1. Write 1 Fair Share as a Fraction</h3>
+
+            <div class="fraction-entry-box" style="margin-bottom: 6px; padding: 8px 10px;">
+              <div class="frac-widget">
+                <label for="l3-frac-num" class="sr-only">Challenge numerator</label>
+                <input type="number" inputmode="numeric" class="frac-input frac-input-num" id="l3-frac-num" min="0" max="50" placeholder="?">
+                <div class="frac-vinculum" aria-hidden="true"></div>
+                <label for="l3-frac-den" class="sr-only">Challenge denominator</label>
+                <input type="number" inputmode="numeric" class="frac-input frac-input-den" id="l3-frac-den" min="1" max="25" placeholder="?">
+              </div>
+              <div class="frac-side-labels">
+                <span class="frac-tag-blue">← Numerator</span>
+                <span class="frac-unit-caption" id="l3-unit-label">muffins / friend</span>
+                <span class="frac-tag-green">← Denominator</span>
+              </div>
+            </div>
+
+            <button type="button" class="sync-from-model-btn" id="l3-sync-model-btn">
+              ⇄ Fill fraction from my model
+            </button>
+
+            <!-- LO2 Magnitude Judgment (Never hidden on Challenge 2 so learner must genuinely reason!) -->
+            <div class="magnitude-block">
+              <p class="sub-question-label">2. Compare 1 share to 1 whole:</p>
+              <div class="mag-toggle-row" role="group" aria-label="Compare share size to 1 whole">
+                <button type="button" class="mag-choice-btn" id="l3-mag-lt1" data-mag="lt1" aria-pressed="false">
+                  Less than 1 whole<br><span style="font-weight:400; font-size:0.69rem;">(Proper fraction &lt; 1)</span>
+                </button>
+                <button type="button" class="mag-choice-btn" id="l3-mag-gt1" data-mag="gt1" aria-pressed="false">
+                  More than 1 whole<br><span style="font-weight:400; font-size:0.69rem;">(Write Mixed Number)</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Conditional Mixed Number Entry (Shown when learner picks More than 1 whole) -->
+            <div class="mixed-entry-panel" id="l3-mixed-panel" hidden>
+              <p class="sub-question-label" style="margin-bottom: 6px;">3. Write as a Mixed Number:</p>
+              <div class="mixed-widget-row">
+                <label for="l3-mix-whole" class="sr-only">Mixed number wholes</label>
+                <input type="number" inputmode="numeric" class="frac-input frac-input-whole" id="l3-mix-whole" min="0" max="10" placeholder="W">
+                <div class="frac-widget">
+                  <label for="l3-mix-num" class="sr-only">Mixed number numerator</label>
+                  <input type="number" inputmode="numeric" class="frac-input frac-input-num" id="l3-mix-num" min="0" max="25" placeholder="?">
+                  <div class="frac-vinculum" aria-hidden="true"></div>
+                  <label for="l3-mix-den" class="sr-only">Mixed number denominator</label>
+                  <input type="number" inputmode="numeric" class="frac-input frac-input-den" id="l3-mix-den" min="1" max="25" placeholder="?">
+                </div>
+                <span class="frac-unit-caption" id="l3-mix-unit-label">muffins</span>
+              </div>
+            </div>
+
+            <button type="button" class="check-work-btn" id="l3-check-btn">
+              Check Challenge
+            </button>
+
+            <div class="diagnostic-box" id="l3-diag-box" aria-live="polite">
+              Build the sharing model on the left, enter your fraction, and compare one share to <strong>1 whole</strong>!
+            </div>
+
+            <div class="diag-next-wrap" id="l3-next-wrap" hidden>
+              <button type="button" class="rise-continue-btn rise-continue-btn-compact" id="l3-next-chal-btn">
+                Next Challenge ➔
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Course Completion Mastery Banner -->
+        <div class="mastery-banner" id="l3-mastery-banner" hidden>
+          <div class="mastery-banner-text">
+            <strong>🎉 Course Complete!</strong> You and Rue mastered fair-sharing division across proper fractions and mixed numbers!
+          </div>
+          <div class="mastery-pills">
+            <span class="mastery-chip">Cookies: 3 ÷ 4 = 3/4</span>
+            <span class="mastery-chip">Chores: 10 ÷ 7 = 1 3/7</span>
+            <span class="mastery-chip">Muffins: 13 ÷ 5 = 2 3/5</span>
+            <span class="mastery-chip">Paint: 3 ÷ 5 = 3/5 (&lt; 1)</span>
+            <span class="mastery-chip">Granola: 7 ÷ 4 = 1 3/4</span>
+          </div>
+        </div>
       </div>
     </section>
   </main>
 
-  <footer class="site-footer">
-    <div>
-      CMU 05-840 (Tools for Online Learning) · Spring 2027 Tool Task 3 Demo #2 · Track B Domain Workspace
+  <!-- Discreet Instructor / LXD & Mayer Notes Toggle & Slide-Over Drawer -->
+  <button type="button" class="lxd-fab-btn" id="lxd-drawer-toggle" aria-pressed="false" aria-controls="lxd-drawer">
+    ⚙️ LXD &amp; Mayer Notes
+  </button>
+
+  <div class="lxd-drawer-backdrop" id="lxd-drawer-backdrop"></div>
+
+  <aside class="lxd-drawer" id="lxd-drawer" aria-labelledby="lxd-drawer-title" aria-hidden="true">
+    <div class="lxd-drawer-header">
+      <h2 class="lxd-drawer-title" id="lxd-drawer-title">⚙️ LXD &amp; Mayer Multimedia Notes</h2>
+      <button type="button" class="lxd-close-btn" id="lxd-drawer-close" aria-label="Close LXD Notes Drawer">✕</button>
     </div>
-    <div>
-      Replicating &amp; extending <a id="footer-baseline-link" href="https://corinalucafocsan.github.io/fraction-course/" target="_blank" rel="noopener noreferrer">Understanding Fractions as Division in Real Life (Corina Luca Focsan, 2026)</a>
+
+    <div class="lxd-drawer-body">
+      <div class="lxd-section">
+        <h3>S26 Rise 360 Baseline &amp; Track B Goal</h3>
+        <p style="margin: 0 0 8px;">
+          Rebuilds and extends Corina Luca Focsan’s Spring 2026 Articulate Rise 360 course,
+          <a href="https://corinalucafocsan.github.io/fraction-course/" target="_blank" rel="noopener noreferrer"><em>Understanding Fractions as Division in Real Life</em></a>
+          (CMU 05-840 · Spring 2027 · Tool Task 3 Demo #2, <strong>Track B</strong>).
+        </p>
+        <p style="margin: 0;">
+          <strong>Overcoming Rise 360’s Authoring Gap:</strong> In Corina’s original Lesson 4 (<em>“Help Rue Out!”</em>), Rise 360 forced learners to pick multiple-choice sentences <em>describing</em> how to draw a <code>10 ÷ 7</code> fraction diagram. Here, learners construct the linked bar + number-line model directly inside Rue’s scenario with step-level misconception diagnostics.
+        </p>
+      </div>
+
+      <div class="lxd-section">
+        <h3>Mayer’s Multimedia Principles Applied</h3>
+        <ul class="lxd-principle-list">
+          <li><strong>Spatial Contiguity:</strong> End-to-end 1-whole bars sit pixel-aligned above the <code>0..N</code> number line and directly beside the symbolic fraction boxes &amp; Rue’s feedback—all inside one <code>1440×900</code> viewport with zero scrolling.</li>
+          <li><strong>Segmenting:</strong> Replaces v1’s 2,800px single-page wall with 3 Rise lessons and 3 bite-sized scenario steps (<code>2.1 Set Up</code> → <code>2.2 Build Model</code> → <code>2.3 Mixed Number</code>).</li>
+          <li><strong>Pre-Training &amp; Modality:</strong> Lesson 1 introduces <em>Fraction</em>, <em>Numerator</em>, <em>Denominator</em>, and <em>Division</em> with Corina’s color guide + user-triggered MP3 voiceovers (never auto-playing).</li>
+          <li><strong>Signaling:</strong> Consistent <strong>Blue (#2563EB) = Numerator</strong> and <strong>Green (#2E8B57) = Denominator</strong> across graphics, cuts, number-line jumps, inputs, and error highlights (paired with hatch/stipple dual-coding).</li>
+          <li><strong>Embodiment &amp; Personalization:</strong> Expressive Rue cutouts (<code>asking</code>, <code>thinking</code>, <code>confused</code>, <code>worried</code>, <code>happy</code>) coach in warm 5th/6th-grade <em>“you”</em> language.</li>
+          <li><strong>Coherence:</strong> Zero adult CMU/LO meta-labels on the learner canvas; all instructor instrumentation lives cleanly in this drawer.</li>
+        </ul>
+      </div>
+
+      <div class="lxd-section">
+        <h3>Carried-Over Learning Objectives (LO1–LO4)</h3>
+        <ul class="lxd-principle-list">
+          <li><strong>LO1:</strong> Build and use fraction bars and number lines to solve equal-sharing division problems (<code>a ÷ b = a/b</code>).</li>
+          <li><strong>LO2:</strong> Distinguish quotients <code>&lt; 1</code> whole (Challenge 2: <code>3 ÷ 5 = 3/5</code>) vs. <code>&gt; 1</code> whole.</li>
+          <li><strong>LO3:</strong> Group improper fractions into mixed numbers and interpret leftover fractional units (catching <code>1 3/10</code> vs. <code>1 3/7</code>).</li>
+          <li><strong>LO4:</strong> Justify fraction-as-division reasoning in real-world unit contexts (<code>1 week = 7 days</code>).</li>
+        </ul>
+      </div>
+
+      <div class="lxd-section">
+        <h3>Instructor Quick-Jump &amp; Reset</h3>
+        <div class="lxd-jump-grid">
+          <button type="button" class="lxd-jump-btn" data-jump-lesson="1">Lesson 1</button>
+          <button type="button" class="lxd-jump-btn" data-jump-lesson="2" data-jump-step="1">L2 · Step 2.1</button>
+          <button type="button" class="lxd-jump-btn" data-jump-lesson="2" data-jump-step="2">L2 · Step 2.2 (10÷7)</button>
+          <button type="button" class="lxd-jump-btn" data-jump-lesson="2" data-jump-step="3">L2 · Step 2.3 (Mixed)</button>
+          <button type="button" class="lxd-jump-btn" data-jump-lesson="3" data-jump-chal="0">L3 · Muffins (13÷5)</button>
+          <button type="button" class="lxd-jump-btn" data-jump-lesson="3" data-jump-chal="1">L3 · Paint (3÷5 &lt;1)</button>
+          <button type="button" class="lxd-jump-btn" data-jump-lesson="3" data-jump-chal="2">L3 · Granola (7÷4)</button>
+          <button type="button" class="lxd-jump-btn" id="lxd-reset-all-btn">↺ Reset Entire Course</button>
+        </div>
+      </div>
+
+      <div class="lxd-section">
+        <h3>Live Workspace Diagnostic State</h3>
+        <pre class="lxd-state-pre" id="lxd-live-state">{}</pre>
+      </div>
     </div>
-  </footer>
+  </aside>
 
   <script src="app.js"></script>
 </body>
